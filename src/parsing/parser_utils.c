@@ -24,10 +24,55 @@ t_bin_node  *new_bin_node(t_token_type type)
     new_node->right = NULL;
     return (new_node);
 }
-
 /*
-void    free_bin(t_bin_node)
+void    free_bin(t_bin_node *node)
 {
-
+    (void*)node;
+    return ; //finish this
 }
 */
+
+t_bin_node	*create_and_link_redirection(t_token **tokens, t_token *tmp)
+{
+	t_bin_node	*redirect_node;
+
+	redirect_node = new_bin_node((*tokens)->type);
+	*tokens = (*tokens)->next->next;
+	redirect_node->left = redirection(tokens);
+	redirect_node->right = create_file_node(tmp->next);
+	free(tmp->value);
+	free(tmp);
+	return (redirect_node);
+}
+
+int	count_command_arguments(t_token *current)
+{
+	int	arg_count;
+
+	arg_count = 0;
+	while (current && current->type == TOKEN_WORD)
+	{
+		arg_count++;
+		current = current->next;
+	}
+	return (arg_count);
+}
+
+void	fill_command_arguments(t_bin_node *command_node,
+	t_token **tokens, int arg_count)
+{
+	int		i;
+	t_token	*tmp;
+
+	i = 0;
+	while (i < arg_count)
+	{
+		command_node->args[i] = ft_strdup((*tokens)->value);
+		tmp = *tokens;
+		*tokens = (*tokens)->next;
+		free(tmp->value);
+		free(tmp);
+		i++;
+	}
+	command_node->args[arg_count] = NULL;
+}
