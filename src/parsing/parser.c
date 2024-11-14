@@ -17,6 +17,8 @@ t_bin_node	*parse_command(t_token **tokens)
 	int				arg_count;
 
 	command_node = new_bin_node(TOKEN_WORD);
+    if (command_node == NULL)
+        return (NULL); //follow up this return 
 	arg_count = count_command_arguments(*tokens);
 	command_node->args = malloc(sizeof(char *) * (arg_count + 1));
 	if (!command_node->args)
