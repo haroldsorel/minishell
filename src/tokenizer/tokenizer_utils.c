@@ -44,7 +44,7 @@ void	add_token_to_list(t_token **tokens, t_token *new_token)
 	}
 }
 
-void	free_tokens(t_token *tokens)
+void	*free_tokens(t_token *tokens)
 {
 	t_token	*tmp;
 
@@ -55,6 +55,7 @@ void	free_tokens(t_token *tokens)
 		free(tmp->value);
 		free(tmp);
 	}
+    return (NULL);
 }
 
 void	update_quote_status(char c, int *in_quote, char *quote_char)
@@ -71,13 +72,21 @@ void	update_quote_status(char c, int *in_quote, char *quote_char)
 void	add_word_token_if_valid(char **start, char **input, t_token **tokens)
 {
 	char	*word;
+    t_token *new;
 
 	if (*input > *start)
 	{
 		word = ft_strndup(*start, *input - *start);
 		if (word)
 		{
-			add_token_to_list(tokens, new_token(TOKEN_WORD, word));
+            new = new_token(TOKEN_WORD, word);
+            if (new == NULL)
+            {
+                free(word);
+                free_tokens(*tokens);
+                //return (NULL);
+            }
+			add_token_to_list(tokens, new);
 			free(word);
 		}
 		else

@@ -91,10 +91,10 @@ typedef struct s_env
 
 t_token		*new_token(t_token_type type, char *value);
 void		add_token_to_list(t_token **tokens, t_token *new_token);
-void		free_tokens(t_token *tokens);
+void		*free_tokens(t_token *tokens);
 void		handle_quotes(char **input, t_token **tokens);
-void		handle_special_chars(char **input, t_token **tokens);
-void		handle_word(char **input, t_token **tokens);
+void		*handle_special_chars(char **input, t_token **tokens);
+void		*handle_word(char **input, t_token **tokens);
 t_token		*tokenize_input(char *input);
  void		display_tokens(t_token *tokens);
 void		update_quote_status(char c, int *in_quote, char *quote_char);

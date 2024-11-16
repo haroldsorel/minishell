@@ -97,13 +97,9 @@ void    print_binary_tree(t_bin_node *root, int level)
         return ;
     printf("level %d : %d\n", level, root->type);
     if (root->left != NULL)
-    {
         print_binary_tree(root->left, level);
-    }
     if (root->right != NULL)
-    {
         print_binary_tree(root->right, level);
-    }
 }
 
 int	main(int argc, char **argv, char **env)
@@ -124,7 +120,10 @@ int	main(int argc, char **argv, char **env)
 		{
             tokens = validate_input_and_tokenize(input);
             if (tokens == NULL)
+            {
+                printf("Tokenization Failed\n");
                 return (1);
+            }
             display_tokens(tokens);
             ast = parser(&tokens);
             print_binary_tree(ast, -1);

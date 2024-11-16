@@ -12,34 +12,41 @@
 
 #include "../../minishell.h"
 
-void	handle_special_chars(char **input, t_token **tokens)
+void	*handle_special_chars(char **input, t_token **tokens)
 {
+    t_token *new;
+
+    new = NULL;
 	if (**input == '>')
 	{
 		if (*(*input + 1) == '>')
 		{
-			add_token_to_list(tokens, new_token(TOKEN_REDIR_APPEND, ">>"));
+			new = new_token(TOKEN_REDIR_APPEND, ">>");
 			(*input)++;
 		}
 		else
-			add_token_to_list(tokens, new_token(TOKEN_REDIR_OUT, ">"));
+			new = new_token(TOKEN_REDIR_OUT, ">");
 	}
 	else if (**input == '<')
 	{
 		if (*(*input + 1) == '<')
 		{
-			add_token_to_list(tokens, new_token(TOKEN_REDIR_HEREDOC, "<<"));
+			new = new_token(TOKEN_REDIR_HEREDOC, "<<");
 			(*input)++;
 		}
 		else
-			add_token_to_list(tokens, new_token(TOKEN_REDIR_IN, "<"));
+			new = new_token(TOKEN_REDIR_IN, "<");
 	}
 	else if (**input == '|')
-		add_token_to_list(tokens, new_token(TOKEN_PIPE, "|"));
+		new = new_token(TOKEN_PIPE, "|");
 	(*input)++;
+    if (new == NULL)
+        return (NULL);
+    add_token_to_list(tokens, new);
+    return (new);
 }
 
-void	handle_word(char **input, t_token **tokens)
+void	*handle_word(char **input, t_token **tokens)
 {
 	char	*start;
 	int		in_quote;
@@ -56,6 +63,7 @@ void	handle_word(char **input, t_token **tokens)
 		(*input)++;
 	}
 	add_word_token_if_valid(&start, input, tokens);
+    return (start);
 }
 
 t_token	*tokenize_input(char *input)
@@ -68,9 +76,18 @@ t_token	*tokenize_input(char *input)
 		while (*input && ft_strchr(" \t\n", *input))
 			input++;
 		if (ft_strchr("><|", *input))
-			handle_special_chars(&input, &tokens);
+        {
+			if (handle_special_chars(&input, &tokens) == NULL)
+                return (free_tokens(tokens));
+        }
 		else
-			handle_word(&input, &tokens);
+        {
+			if (handle_word(&input, &tokens) == NULL)
+            {
+                free(tokens);
+                return (free_tokens(tokens));
+            }
+        }
 	}
 	return (tokens);
 }
