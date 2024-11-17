@@ -52,7 +52,6 @@ int	tokenizer(t_data *data, char *input)
 			flag = handle_word(&tokens, input, &i);
 		if (flag == -1)
 			return (-1);
-		printf("%d\n", i);
 	}
 	data->tokens = tokens;
 	return (0);
