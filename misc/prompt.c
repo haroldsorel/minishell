@@ -11,51 +11,48 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*get_env_var(char **env, char *var) //this function gets the corresponding value from the key <var>
-{
-	int		i;
-	char	*res;
-
-	i = 0;
-	if (!var || !var[0])
-		return (NULL);
-	while ((env[i] && ft_strncmp(env[i], var, ft_strlen(var))) 
-		|| (env[i] && env[i][ft_strlen(var)] != '='))
-		i++;
-	if (env[i])
-	{
-		res = ft_strchr(env[i], '=');
-		res++;
-		return (res);
-	}
-	return (NULL);
-}
-
-
-char	*get_prompt(t_data *data)
+static char *get_prompt(void)
 {
 	char	*tmp;
 	char	*cwd;
 	char	*prompt;
 
-	prompt = ft_strjoin(get_env_var(data->env, "USER"), " "); //not necessary
-	if (!prompt)
-		return (ft_strdup("minishell % "));
+    prompt = ft_strdup("");
+    if (prompt == NULL)
+        return (NULL); //follow up
 	cwd = getcwd(NULL, 0);
-	if (cwd)
+	if (cwd != NULL)
 	{
 		tmp = ft_strrchr(cwd, '/');
-		tmp = ft_strjoin(prompt, ++tmp);
+        tmp++;
+		tmp = ft_strjoin(prompt, tmp);
 		free(cwd);
 		free(prompt);
 	}
 	else
 		tmp = prompt;
-	//if (!tmp)
-		//ft_crash(data);
-	prompt = ft_strjoin(tmp, " % ");
+	prompt = ft_strjoin(tmp, " -> ");
 	free(tmp);
-	//if (!prompt)
-	//	ft_crash(data);
+	if (!prompt)
+		return (NULL); //folow up
 	return (prompt);
+}
+
+char    *prompt_launcher(t_data *data)
+{
+    char    *prompt;
+    char    *user_input;
+
+    prompt = get_prompt();
+    if (prompt == NULL)
+        return (NULL);
+    user_input = readline(prompt);
+    free(prompt);
+	if (user_input == NULL)
+		return (NULL);
+    data->input = ft_strtrim(user_input, " \t\n\v\f\r");
+    free(user_input);
+    if(data->input == NULL)
+        return (NULL);
+    return (prompt);
 }

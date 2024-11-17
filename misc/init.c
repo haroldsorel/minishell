@@ -78,6 +78,6 @@ void init_all(t_data *data, char **env)
 {
     init_data(data);
     init_signals();
-    init_env(data, env);
+    init_env(data, env); //malloc
 }
 

@@ -25,7 +25,6 @@
 # include <errno.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <stdbool.h>
 # include "../libft/libft.h"
 # include "../get_next_line/get_next_line.h"
 
@@ -55,13 +54,14 @@
 
 typedef enum e_token_type
 {
-	TOKEN_WORD,
-	TOKEN_PIPE,
-	TOKEN_REDIR_IN,
-	TOKEN_REDIR_OUT,
-	TOKEN_REDIR_APPEND,
-	TOKEN_REDIR_HEREDOC,
-	TOKEN_ENV_VAR,
+	WORD,
+	DQUOTE,
+	QUOTE,
+	PIPE,
+	HEREDOC,
+	INFILE,
+	OUTFILE,
+	APPEND,
 }	t_token_type;
 
 typedef struct s_token
@@ -69,6 +69,7 @@ typedef struct s_token
 	t_token_type		type;
 	char				*value;
 	struct s_token		*next;
+	struct s_token		*prev;
 }	t_token;
 
 typedef struct s_env
@@ -98,6 +99,21 @@ typedef struct s_data
 }	t_data;
 
 void 	init_all(t_data *data, char **env);
-char    *get_prompt(t_data *data);
+char    *prompt_launcher(t_data *data);
+
+
+void	lexer(t_data *data, char **line);
+void    free_tokens(t_token **tokens);
+int		handle_word(t_token **tokens, char *input, int *i);
+int		handle_quotes(t_token **tokens, char *input, int *i);
+int		handle_dquotes(t_token **tokens, char *input, int *i);
+int		handle_pipe(t_token **tokens, int *i);
+int		add_token_to_list(t_token **tokens, t_token_type type, char *value);
+char    *extract_word_from_quote(char *line, int *i, char quote);
+int		handle_append(t_token **tokens, char *input, int *i);
+int		handle_heredoc(t_token **tokens, char *input, int *i);
+int		handle_infile(t_token **tokens, char *input, int *i);
+int		handle_outfile(t_token **tokens, char *input, int *i);
+int		tokenizer(t_data *data, char *input);
 
 #endif

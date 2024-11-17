@@ -1,12 +1,17 @@
 NAME = minishell
-CC = cc
+CC = gcc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g -I. -Ilibft
 INCLUDES = minishell.h
 
 SRCS =	main.c \
 		misc/init.c \
 		misc/prompt.c \
-		misc/signal.c
+		misc/signal.c \
+		misc/free.c \
+		tokenizer/tokenizer_utils.c \
+		tokenizer/handle_quotes.c \
+		tokenizer/handle_special_chars.c \
+		tokenizer/tokenizer.c
 
 	
 OBJS = $(SRCS:.c=.o)
