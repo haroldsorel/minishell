@@ -72,6 +72,7 @@ static void    init_data(t_data *data)
     data->env = NULL;
     data->status = 0;
     data->pid = 0;
+	data->exec_size = 0;
 }
 
 void init_all(t_data *data, char **env)

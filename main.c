@@ -48,7 +48,7 @@ void    print_tokens(t_token *tokens)
     current = tokens;
     while (current != NULL)
     {
-        printf("%d:%s\n", current->type, current->value);
+        printf("%d:%s|\n", current->type, current->value);
         current = current->next;
     }
 }

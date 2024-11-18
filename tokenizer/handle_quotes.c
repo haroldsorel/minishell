@@ -44,7 +44,7 @@ int	handle_word(t_token **tokens, char *input, int *i)
 	int		start;
 
 	start = *i;
-	while (input[*i] != '\0' && strchr("\t\n><| '\"", input[*i]) == NULL)
+	while (input[*i] != '\0' && strchr("><|'\"", input[*i]) == NULL)
 		(*i)++;
 	if (add_token_to_list(tokens, WORD, ft_substr(input, start, *i - start)) == -1) //watch out if substr returns null
 		return (-1);

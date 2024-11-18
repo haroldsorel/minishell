@@ -94,6 +94,7 @@ typedef struct s_data
 	char	*input;
 	int		status;
 	int		pid;
+	int		exec_size;
 	t_token	*tokens;
 	t_exec	*exec;
 }	t_data;
@@ -119,5 +120,7 @@ int		tokenizer(t_data *data, char *input);
 char	*get_env_variable(char **env, char *var);
 
 int		expander(t_data *data);
+
+int		count_pipes(t_token **tokens);
 
 #endif
