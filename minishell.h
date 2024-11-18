@@ -116,4 +116,8 @@ int		handle_infile(t_token **tokens, char *input, int *i);
 int		handle_outfile(t_token **tokens, char *input, int *i);
 int		tokenizer(t_data *data, char *input);
 
+char	*get_env_variable(char **env, char *var);
+
+int		expander(t_data *data);
+
 #endif

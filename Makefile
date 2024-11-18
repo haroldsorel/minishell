@@ -8,6 +8,8 @@ SRCS =	main.c \
 		misc/prompt.c \
 		misc/signal.c \
 		misc/free.c \
+		misc/env.c\
+		misc/expander.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/handle_quotes.c \
 		tokenizer/handle_special_chars.c \
