@@ -40,8 +40,6 @@ int	tokenizer(t_data *data, char *input)
 	flag = 0;
 	while (input[i] != '\0')
 	{
-		while (input[i] && ft_strchr(" \t\n", input[i]))
-			i++;
 		if (ft_strchr("><|", input[i]) != NULL)
 			flag = handle_special_chars(&tokens, input, &i);
 		else if (input[i] == '\'')

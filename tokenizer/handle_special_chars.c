@@ -33,7 +33,7 @@ int handle_outfile(t_token **tokens, char *input, int *i)
             return (-1);
         return (0);
     }
-    while (input[*i] != '\0' && strchr("\t\n><| '\"", input[*i]) == NULL)
+    while (input[*i] != '\0' && strchr("><| '\"", input[*i]) == NULL)
 		(*i)++;
 	if (add_token_to_list(tokens, OUTFILE, ft_substr(input, start, *i - start)) == -1) //watch out if substr returns null
 		return (-1);
@@ -54,7 +54,7 @@ int handle_infile(t_token **tokens, char *input, int *i)
             return (-1);
         return (0);
     }
-    while (input[*i] != '\0' && strchr("\t\n><| '\"", input[*i]) == NULL)
+    while (input[*i] != '\0' && strchr("><| '\"", input[*i]) == NULL)
 		(*i)++;
 	if (add_token_to_list(tokens, INFILE, ft_substr(input, start, *i - start)) == -1) //watch out if substr returns null
 		return (-1);
@@ -75,7 +75,7 @@ int handle_heredoc(t_token **tokens, char *input, int *i)
             return (-1);
         return (0);
     }
-    while (input[*i] != '\0' && strchr("\t\n><| '\"", input[*i]) == NULL)
+    while (input[*i] != '\0' && strchr("><| '\"", input[*i]) == NULL)
 		(*i)++;
 	if (add_token_to_list(tokens, HEREDOC, ft_substr(input, start, *i - start)) == -1) //watch out if substr returns null
 		return (-1);
@@ -96,7 +96,7 @@ int handle_append(t_token **tokens, char *input, int *i)
             return (-1);
         return (0);
     }
-    while (input[*i] != '\0' && strchr("\t\n><| '\"", input[*i]) == NULL)
+    while (input[*i] != '\0' && strchr("><| '\"", input[*i]) == NULL)
 		(*i)++;
 	if (add_token_to_list(tokens, APPEND, ft_substr(input, start, *i - start)) == -1) //watch out if substr returns null
 		return (-1);
