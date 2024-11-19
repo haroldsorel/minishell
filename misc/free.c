@@ -11,6 +11,29 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void    free_one_token(t_token *token)
+{
+    if (token == NULL)
+        return ;
+    free(token->value);
+    free(token);
+}
+
+void    free_array_of_pointers(char **array)
+{
+    int     i;
+
+    i = 0;
+    if (array == NULL)
+        return ;
+    while (array[i] != NULL)
+    {
+        free(array[i]);
+        i++;
+    }
+    free(array); //if was malloced
+}
+
 void    free_tokens(t_token **tokens)
 {
     t_token *current;
@@ -22,8 +45,7 @@ void    free_tokens(t_token **tokens)
     while (current != NULL)
     {
         temp = current->next;
-        free(current->value);
-        free(current);
+        free_one_token(temp);
         current = temp;
     }
     *tokens = NULL;

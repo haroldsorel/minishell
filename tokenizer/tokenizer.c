@@ -31,11 +31,11 @@ int handle_special_chars(t_token **tokens, char *input, int *i)
 
 int	tokenizer(t_data *data, char *input)
 {
-	t_token	*tokens;
+	t_token	*tokens; //this step is not necessary just put data->tokens int the arguments
 	int		i;
 	int		flag;
 
-	tokens = NULL;
+	tokens = NULL; //idem
 	i = 0;
 	flag = 0;
 	while (input[i] != '\0')
@@ -51,6 +51,10 @@ int	tokenizer(t_data *data, char *input)
 		if (flag == -1)
 			return (-1);
 	}
-	data->tokens = tokens;
+	if (expander(data) == -1)
+		return (-1);
+	//if (concatenator(&tokens) == -1) //connect these together with || after testing 
+	//	return (-1);
+	data->tokens = tokens; //idem
 	return (0);
 }

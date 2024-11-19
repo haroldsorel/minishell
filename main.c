@@ -24,11 +24,6 @@ int minishell_launcher(t_data *data)
         if (tokenizer(data, data->input) == -1)
             return (-1); //data to be freed
         print_tokens(data->tokens);
-         //   return (-1); //to do
-        if (expander(data) == -1)
-            return (-1); //to do
-        printf("AFTER EXPANDER\n");
-        print_tokens(data->tokens);
         //if (parser(data) == NULL)
          //   return (-1); //to do
         //if (executer(data) == NULL)
