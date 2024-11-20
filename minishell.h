@@ -129,6 +129,8 @@ int		concatenater(t_token **tokens);
 void    free_one_token(t_token *token);
 
 int		syntax_checker(char *input);
+int		syntax_error_handler(char *str);
+int		quotes_skipper(char *input, int *i);
 
 
 #endif
