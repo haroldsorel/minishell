@@ -11,6 +11,32 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void    print_tokens(t_token *tokens);
+
+static int	pipe_checker(t_token *token)
+{
+	if (token != NULL && token->type == PIPE)
+    {
+        printf("Syntax Error : PIPE\n"); //watch out printf
+		return (-1);
+    }
+	while (token && token->next)
+	{
+		if (token->type == PIPE && token->next->type == PIPE)
+        {
+            printf("Syntax Error : PIPE\n"); //watch out printf
+            return (-1);
+        }
+		token = token->next;
+	}
+	if (token->type == PIPE)
+    {
+        printf("Syntax Error : PIPE\n"); //watch out printf
+		return (-1);
+    }
+	return (0);
+}
+
 int handle_special_chars(t_token **tokens, char *input, int *i)
 {
 	int	flag;
@@ -40,6 +66,12 @@ int	tokenizer(t_data *data, char *input)
 	flag = 0;
 	while (input[i] != '\0')
 	{
+		if (input[i] == ' ')
+		{
+			while (input[i] == ' ')
+				i++;
+			flag = add_token_to_list(&tokens, SPACE, ft_strdup(" ")); //if strdup fails follow up
+		}
 		if (ft_strchr("><|", input[i]) != NULL)
 			flag = handle_special_chars(&tokens, input, &i);
 		else if (input[i] == '\'')
@@ -51,10 +83,12 @@ int	tokenizer(t_data *data, char *input)
 		if (flag == -1)
 			return (-1);
 	}
+	data->tokens = tokens; //idem
 	if (expander(data) == -1)
 		return (-1);
-	//if (concatenator(&tokens) == -1) //connect these together with || after testing 
-	//	return (-1);
-	data->tokens = tokens; //idem
+	if (concatenater(&tokens) == -1) //connect these together with || after testing 
+		return (-1);
+	if (pipe_checker(tokens) == -1)
+		return (-1);
 	return (0);
 }

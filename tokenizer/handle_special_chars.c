@@ -13,7 +13,7 @@
 
 int	handle_pipe(t_token **tokens, int *i)
 {
-	if (add_token_to_list(tokens, PIPE, NULL) == -1)
+	if (add_token_to_list(tokens, PIPE, ft_strdup("|")) == -1) //maybe strdup pipe or not
 		return (-1);
     (*i)++;
 	return (0);

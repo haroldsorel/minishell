@@ -10,9 +10,11 @@ SRCS =	main.c \
 		misc/free.c \
 		misc/env.c\
 		misc/expander.c \
+		misc/syntax_checker.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/handle_quotes.c \
 		tokenizer/handle_special_chars.c \
+		tokenizer/concatenater.c \
 		tokenizer/tokenizer.c \
 		parsing/parser.c \
 		parsing/parser_utils.c

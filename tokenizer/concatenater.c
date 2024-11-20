@@ -11,36 +11,70 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int concatenate_quote(t_token *token)
+int concatenate_word(t_token *current)
 {
-    t_token *tmp;
+    char    *old_value;
 
-    tmp = NULL;
+    old_value = current->prev->value;
+    current->prev->value = ft_strjoin(current->prev->value, current->value);
+    free(old_value);
+    if (current->prev->value == NULL)
+        return (-1);
+    current->prev->next = current->next;
+    if (current->next != NULL)
+        current->next->prev = current->prev;
+    free_one_token(current);
+    return (0);
 }
 
-int concatenate_word(t_token *token) //check if prev is a file aswell but do that later
+void delete_spaces(t_token **token)
 {
-    t_token *tmp;
+    t_token *current;
+    t_token *temp;
 
-    tmp = NULL;
-    if (token->prev == NULL)
-        return (0);
-    if ((token->prev->value)[ft_strlen(token->prev->value) - 1])
-    
+    temp = NULL;
+    current = *token;
+    while (current != NULL)
+    {
+        if (current->type == SPACE)
+        {
+            temp = current->next;
+            current->prev->next = current->next;
+            if (current->next != NULL)
+                current->next->prev = current->prev;
+            free_one_token(current);
+            current = temp;
+        }
+        else
+            current = current->next;
+    }
 }
 
 int concatenater(t_token **tokens)
 {
     t_token *current;
+    t_token *temp;
 
-    current = *tokens; //verify for NULL
+    current = *tokens;
     while (current != NULL)
     {
-        if (current->type == WORD)
-            concatenate_word(current);
-        else if (current->type == QUOTE || current->type == DQUOTE)
-            concatenate_quote(current);
-        current->next;
+        if (current->type == WORD || current->type == DQUOTE
+            || current->type == QUOTE)
+        {
+            if (current->prev != NULL && current->prev->type != SPACE
+                && current->prev->type != PIPE)
+            {
+                temp = current->next;
+                if (concatenate_word(current) == -1)
+                    return (-1);
+                current = temp;
+            }
+            else
+                current = current->next;
+        }
+        else
+            current = current->next;
     }
+    delete_spaces(tokens);
+    return (0);
 }
-

@@ -62,6 +62,7 @@ typedef enum e_token_type
 	INFILE,
 	OUTFILE,
 	APPEND,
+	SPACE,
 }	t_token_type;
 
 typedef struct s_token
@@ -122,5 +123,12 @@ char	*get_env_variable(char **env, char *var);
 int		expander(t_data *data);
 
 int		count_pipes(t_token **tokens);
+
+int		concatenater(t_token **tokens);
+
+void    free_one_token(t_token *token);
+
+int		syntax_checker(char *input);
+
 
 #endif
