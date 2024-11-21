@@ -40,8 +40,8 @@ int minishell_launcher(t_data *data)
             free_tokens(&(data->tokens));
             return (-1); //to do
         }
-        //if (executer(data) == NULL)
-         //   return (-1); //to do
+        if (executer(data) == -1)
+            return (-1); //to do
         add_history(data->input);
         //free_all(data);
     }

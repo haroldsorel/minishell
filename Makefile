@@ -21,7 +21,18 @@ SRCS =	main.c \
 		parsing/parser_utils.c \
 		parsing/file_parser.c \
 		parsing/args_parser.c \
-		parsing/heredoc_parser.c
+		parsing/heredoc_parser.c \
+		builtins/cd.c \
+		builtins/echo.c \
+		builtins/env.c \
+		builtins/exit.c \
+		builtins/export.c \
+		builtins/pwd.c \
+		builtins/unset.c \
+		exec/exec_utils.c \
+		exec/exec.c \
+		exec/pipe_executor.c \
+		exec/pipe_executor_utils.c
 
 	
 OBJS = $(SRCS:.c=.o)

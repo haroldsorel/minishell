@@ -59,6 +59,7 @@ int init_exec(t_data *data)
         data->exec[i].out_file = 1;
         data->exec[i].args = NULL;
         data->exec[i].path = NULL;
+        data->exec[i].builtin = 0;
         i++;
     }
     return (0);
@@ -70,6 +71,7 @@ int parser(t_data *data)
         return (-1);
     if (fill_commands(data, &(data->tokens)) == -1)
         return (-1);
+    fill_builtin(data->exec, data->exec_size);
     print_commands(data, data->exec);
     free_tokens(&(data->tokens));
     return (0);

@@ -52,6 +52,18 @@
 # define WHITE "\001\033[0;97m\002"
 # define DEFAULT "\001\033[0;39m\002"
 
+typedef enum e_builtin
+{
+	NOT_A_BUILTIN,
+	FT_CD,
+	FT_ECHO,
+	FT_ENV,
+	FT_EXPORT,
+	FT_PWD,
+	FT_UNSET,
+	FT_EXIT,
+}	t_builtin;
+
 typedef enum e_token_type
 {
 	WORD,
@@ -81,10 +93,11 @@ typedef struct s_env
 
 typedef struct s_exec
 {
-	int		in_file;
-	int		out_file;
-	char	*path;
-	char	**args;
+	t_builtin	builtin;
+	int			in_file;
+	int			out_file;
+	char		*path;
+	char		**args;
 }	t_exec;
 
 
@@ -139,5 +152,15 @@ int 	file_parser(t_data *data, t_token *token, t_exec *exec);
 int		count_args(t_token *tokens);
 int		args_parser(t_token *token, t_exec *exec);
 int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
+void	fill_builtin(t_exec *exec, int	execsize);
+
+void	ft_env(t_data *data);
+void	ft_pwd(t_data *data);
+void    ft_echo(char **args);
+
+
+int		executer(t_data *data);
+
+int		ft_strcmp(char *s1, char *s2);
 
 #endif
