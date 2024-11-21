@@ -127,10 +127,14 @@ int		count_pipes(t_token **tokens);
 int		concatenater(t_token **tokens);
 
 void    free_one_token(t_token *token);
+void    free_array_of_pointers(char **array);
 
 int		syntax_checker(char *input);
 int		syntax_error_handler(char *str);
 int		quotes_skipper(char *input, int *i);
 
+int		parser(t_data *data);
+void	print_commands(t_data *data, t_exec *exec);
+int 	file_parser(t_data *data, t_token *token, t_exec *exec);
 
 #endif

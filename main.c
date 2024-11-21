@@ -18,19 +18,31 @@ int minishell_launcher(t_data *data)
     {
         if (prompt_launcher(data) == NULL) //mallocs and free user input next
             return (-1);
-        printf("\n\nUSER_INPUT : %s/\n\n", data->input);
-        syntax_checker(data->input);
-        //if (syntax_checker(data->input) == -1) //no mallocs
-        //    return (-1);
-        //lexer(data, &(data->input)); //== NULL) //mallocs
-        //if (tokenizer(data, data->input) == -1)
-        //    return (-1); //data to be freed
-        //print_tokens(data->tokens);
-        //if (parser(data) == NULL)
-         //   return (-1); //to do
+        printf("\n\nUSER_INPUT : %s\n\n", data->input);
+        if (syntax_checker(data->input) == -1) //no mallocs
+        {
+            free(data->input);
+            free_array_of_pointers(data->env);
+            return (-1);
+        }
+        if (tokenizer(data, data->input) == -1)
+        {
+            free(data->input);
+            free_array_of_pointers(data->env);
+            return (-1); //data to be freed
+        }
+        printf("\n\nTOKENS\n\n");
+        print_tokens(data->tokens);
+        if (parser(data) == -1)
+        {
+            free(data->input);
+            free_array_of_pointers(data->env);
+            free_tokens(&(data->tokens));
+            return (-1); //to do
+        }
         //if (executer(data) == NULL)
          //   return (-1); //to do
-        //add_history(data->input);
+        add_history(data->input);
         //free_all(data);
     }
     return (0);
@@ -45,9 +57,10 @@ void    print_tokens(t_token *tokens)
     current = tokens;
     while (current != NULL)
     {
-        printf("%d:%s/\n", current->type, current->value);
+        printf("%d:%s\n", current->type, current->value);
         current = current->next;
     }
+    printf("\n\n");
 }
 
 int main(int argc, char **argv, char **env)

@@ -11,13 +11,15 @@ SRCS =	main.c \
 		misc/env.c\
 		misc/expander.c \
 		misc/syntax_checker.c \
+		misc/syntax_checker_utils.c \
 		tokenizer/tokenizer_utils.c \
 		tokenizer/handle_quotes.c \
 		tokenizer/handle_special_chars.c \
 		tokenizer/concatenater.c \
 		tokenizer/tokenizer.c \
 		parsing/parser.c \
-		parsing/parser_utils.c
+		parsing/parser_utils.c \
+		parsing/file_parser.c
 
 	
 OBJS = $(SRCS:.c=.o)

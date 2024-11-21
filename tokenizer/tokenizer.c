@@ -13,30 +13,6 @@
 
 void    print_tokens(t_token *tokens);
 
-static int	pipe_checker(t_token *token)
-{
-	if (token != NULL && token->type == PIPE)
-    {
-        printf("Syntax Error : PIPE\n"); //watch out printf
-		return (-1);
-    }
-	while (token && token->next)
-	{
-		if (token->type == PIPE && token->next->type == PIPE)
-        {
-            printf("Syntax Error : PIPE\n"); //watch out printf
-            return (-1);
-        }
-		token = token->next;
-	}
-	if (token->type == PIPE)
-    {
-        printf("Syntax Error : PIPE\n"); //watch out printf
-		return (-1);
-    }
-	return (0);
-}
-
 int handle_special_chars(t_token **tokens, char *input, int *i)
 {
 	int	flag;
@@ -84,11 +60,7 @@ int	tokenizer(t_data *data, char *input)
 			return (-1);
 	}
 	data->tokens = tokens; //idem
-	if (expander(data) == -1)
-		return (-1);
-	if (concatenater(&tokens) == -1) //connect these together with || after testing 
-		return (-1);
-	if (pipe_checker(tokens) == -1)
+	if (expander(data) == -1 || concatenater(&tokens) == -1)
 		return (-1);
 	return (0);
 }
