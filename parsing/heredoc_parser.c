@@ -23,7 +23,7 @@ int	input_handler(t_data *data, t_token *token, int *end)
 	while (input != NULL && strcmp(input, token->value)) //change strcmp
 	{
 		//buff = expand(data, input); //implement expand function, see how it relates to the one in tokenize
-		//write(end[1], input, ft_strlen(input));
+		write(end[1], input, ft_strlen(input));
 		free(input);
 		input = readline(">");
 	}
@@ -55,11 +55,11 @@ int heredoc_handler(t_data *data, t_token *token, t_exec *exec)
 
     old_stdin = dup(STDIN_FILENO); //stores to restore it later
     //signal(SIGINT, sig_interrupt_exec);
-    pipe(end); //this is for interprocess communication
+    pipe(end);
     pid = fork();
     if (pid < 0)
         return (-1);
-    if (pid == 0) //executes the child process
+    if (pid == 0)
     {
         //signal(SIGINT, SIG_DFL);
         if (input_handler(data, token, end) == -1)
@@ -68,7 +68,7 @@ int heredoc_handler(t_data *data, t_token *token, t_exec *exec)
     }
     else
     {
-        waitpid(pid, NULL, 0); //wait for child process to be finished
+        waitpid(pid, NULL, 0);
         fill_input(data, exec, end, old_stdin);
     }
     return (0);
