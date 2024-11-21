@@ -13,22 +13,16 @@
 
 void	print_one_exec(t_exec exec)
 {
-	static int	i = 0;
-    //int j;
-
-    //j = 0;
-    i++;
-    printf("COMMAND %d\n", i);
+    printf("COMMAND\n");
 	printf("infile	: %d\n", exec.in_file);
 	printf("outfile	: %d\n", exec.out_file);
 	printf("path	: %s\n", exec.path);
 	printf("Exec Args : ");
-	//while (*(exec.args) != NULL)
-	//{
-	//	j++;
-	//	printf("%d : %s, ", i, *(exec.args));
-	//	(exec.args)++;
-	//}
+	while (*(exec.args) != NULL)
+	{
+		printf("%s, ", *(exec.args));
+		(exec.args)++;
+	}
     printf("\n");
 }
 

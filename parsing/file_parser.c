@@ -11,20 +11,19 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int file_parser(t_data *data, t_token *token, t_exec *exec)
+int file_handler(t_data *data, t_token *token, t_exec *exec)
 {
     int	fd;
 
 	fd = -1;
-	//if (exec->in_file == -1 || exec->out_file == -1)
-	//	return (-1); //understand why this guy told me this
 	if (token->type == INFILE)
 		fd = open(token->value, O_RDONLY);
 	else if (token->type == OUTFILE)
 		fd = open(token->value, O_WRONLY | O_CREAT | O_TRUNC, 00777);
 	else if (token->type == APPEND)
 		fd = open(token->value, O_WRONLY | O_CREAT | O_APPEND, 00777);
-	//if (fd == -1) //to do
+	if (fd == -1)
+		return (-1);
 	if (fd == -1)
 		data->status = 1;
 	if (token->type == INFILE && exec->in_file > 2)
@@ -38,4 +37,17 @@ int file_parser(t_data *data, t_token *token, t_exec *exec)
 	else
 		close(fd);
     return (0);
+}
+
+int file_parser(t_data *data, t_token *current, t_exec *exec)
+{
+	while (current != NULL && current->type != PIPE)
+    {
+        if (current->type == INFILE || current->type == OUTFILE
+            || current->type == APPEND)
+            if (file_handler(data, current, exec) == -1)
+				return (-1);
+		current = current->next;
+	}
+	return (0);
 }

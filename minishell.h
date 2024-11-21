@@ -136,5 +136,8 @@ int		quotes_skipper(char *input, int *i);
 int		parser(t_data *data);
 void	print_commands(t_data *data, t_exec *exec);
 int 	file_parser(t_data *data, t_token *token, t_exec *exec);
+int		count_args(t_token *tokens);
+int		args_parser(t_token *token, t_exec *exec);
+int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
 
 #endif

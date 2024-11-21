@@ -45,7 +45,7 @@ void    free_tokens(t_token **tokens)
     while (current != NULL)
     {
         temp = current->next;
-        free_one_token(temp);
+        free_one_token(current);
         current = temp;
     }
     *tokens = NULL;

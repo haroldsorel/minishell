@@ -16,19 +16,16 @@ int fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
     t_token *current;
 
     current = *tokens;
+    if (file_parser(data, *tokens, exec) == -1)
+        return (-1);
+	if (heredoc_parser(data, current, exec) == -1)
+        return (-1);
+	if (args_parser(*tokens, exec) == -1)
+        return (-1);
     while (current != NULL && current->type != PIPE)
-    {
-        if (current->type == INFILE || current->type == OUTFILE
-            || current->type == APPEND)
-            file_parser(data, current, exec);
-        //else if (current->type == HEREDOC)
-		//	heredoc_parser(data, current, i);
-		//else
-		//	args_parser(data, current, i);
-		//if (g_signal == SIGINT)
-		//	return ;
-		current = current->next;
-    }
+        current = current->next;
+    if (current != NULL && current->type == PIPE)
+        current = current->next;
     *tokens = current;
     return (0);
 }
@@ -40,7 +37,8 @@ int fill_commands(t_data *data, t_token **tokens)
     i = 0;
     while (i < data->exec_size)
     {
-        fill_one_command(data, tokens, &(data->exec[i]));
+        if (fill_one_command(data, tokens, &(data->exec[i])) == -1)
+            return (-1);
         i++;
     }
     return (0);
@@ -73,5 +71,6 @@ int parser(t_data *data)
     if (fill_commands(data, &(data->tokens)) == -1)
         return (-1);
     print_commands(data, data->exec);
+    free_tokens(&(data->tokens));
     return (0);
 }

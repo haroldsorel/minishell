@@ -19,7 +19,9 @@ SRCS =	main.c \
 		tokenizer/tokenizer.c \
 		parsing/parser.c \
 		parsing/parser_utils.c \
-		parsing/file_parser.c
+		parsing/file_parser.c \
+		parsing/args_parser.c \
+		parsing/heredoc_parser.c
 
 	
 OBJS = $(SRCS:.c=.o)
