@@ -157,6 +157,7 @@ void	fill_builtin(t_exec *exec, int	execsize);
 void	ft_env(t_data *data);
 void	ft_pwd(t_data *data);
 void    ft_echo(char **args);
+int		ft_exit(t_data *data, char **args);
 
 
 int		executer(t_data *data);

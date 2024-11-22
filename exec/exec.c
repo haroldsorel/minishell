@@ -25,8 +25,8 @@ void	builtin_executer(t_data *data, t_builtin type)
         ft_pwd(data);
     //else if (type == FT_UNSET)
     //    ft_unset(data);
-    //else if (type == FT_EXIT)
-     //   ft_exit(data);
+    else if (type == FT_EXIT)
+        ft_exit(data, data->exec->args);
    else
         printf("Command Not Found\n"); //PRINTF TAKE OFF
 }

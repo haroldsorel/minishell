@@ -38,11 +38,11 @@ void    ft_echo(char **args)
         i++;
     while (args[i] != NULL)
     {
-        printf("%s", args[i]); //PRINTF CHANGE!!!
+        write(1, args[i], ft_strlen(args[i])); //PRINTF CHANGE!!!
         if (args[i + 1] != NULL)
-            printf(" ");
+            write(1, " ", 1);
         i++;
     }
     if (flag == 0)
-        printf("\n"); //PRINTF CHANGE!!!
+        write(1, "\n", 1); //PRINTF CHANGE!!!
 }
