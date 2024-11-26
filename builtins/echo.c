@@ -25,7 +25,7 @@ static int  valid_flag(char *str)
     return (0);
 }
 
-void    ft_echo(char **args)
+int ft_echo(char **args)
 {
     int i;
     int flag;
@@ -38,11 +38,12 @@ void    ft_echo(char **args)
         i++;
     while (args[i] != NULL)
     {
-        write(1, args[i], ft_strlen(args[i])); //PRINTF CHANGE!!!
+        write(1, args[i], ft_strlen(args[i]));
         if (args[i + 1] != NULL)
             write(1, " ", 1);
         i++;
     }
     if (flag == 0)
-        write(1, "\n", 1); //PRINTF CHANGE!!!
+        write(1, "\n", 1);
+    return (0);
 }

@@ -80,5 +80,5 @@ int ft_exit(t_data *data, char **args)
         exit_code = exit_code + 256;
     printf("EXITCODE : %d\n", exit_code); //PRINTF TAKE OFF
     //exit(str_to_uint8(args[1]));
-    return (0);
+    return (0); //status should be set to 0
 }

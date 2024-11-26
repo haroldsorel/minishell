@@ -69,7 +69,7 @@ static int  handle_env_variable(t_data *data, t_token *token, char *word, int *i
     var = ft_substr(word, *i + 1, j - (*i + 1));
     if (var == NULL)
         return (-1);
-    value = get_env_variable(data->env, var); //is this malloced? apparently not so make sure
+    value = get_env_variable(data->env, var);
     free(var);
     new_word = ft_insert(word, value, *i, j);
     (*i) = *i + ft_strlen(value);

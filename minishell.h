@@ -132,6 +132,10 @@ int		handle_outfile(t_token **tokens, char *input, int *i);
 int		tokenizer(t_data *data, char *input);
 
 char	*get_env_variable(char **env, char *var);
+int		env_len(char **env);
+int		env_add(t_data *data, char *str);
+int		env_add_or_replace(t_data *data, char *variable, char *str);
+int		is_in_env(char **env, char *var);
 
 int		expander(t_data *data);
 
@@ -140,7 +144,7 @@ int		count_pipes(t_token **tokens);
 int		concatenater(t_token **tokens);
 
 void    free_one_token(t_token *token);
-void    free_array_of_pointers(char **array);
+void    *free_array_of_pointers(char **array);
 
 int		syntax_checker(char *input);
 int		syntax_error_handler(char *str);
@@ -154,10 +158,13 @@ int		args_parser(t_token *token, t_exec *exec);
 int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
 void	fill_builtin(t_exec *exec, int	execsize);
 
-void	ft_env(t_data *data);
-void	ft_pwd(t_data *data);
-void    ft_echo(char **args);
+int		ft_env(t_data *data);
+int		ft_pwd(t_data *data);
+int		ft_echo(char **args);
 int		ft_exit(t_data *data, char **args);
+int		ft_cd(t_data *data, char **args);
+int     ft_unset(t_data *data, char **args);
+int		ft_export(t_data *data, char **args);
 
 
 int		executer(t_data *data);

@@ -11,16 +11,6 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	env_len(char **env)
-{
-	int	i;
-
-	i = 0;
-	while (env[i] != NULL)
-		i++;
-	return (i);
-}
-
 //void	free_env(char **envv)
 //{
 	//int	i;

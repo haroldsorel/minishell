@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_env(t_data *data)
+int	ft_env(t_data *data)
 {
 	int	i;
 
@@ -22,10 +22,9 @@ void	ft_env(t_data *data)
         {
 			write(1, data->env[i], ft_strlen(data->env[i]));
             write(1, "\n", 1);
-            //newline?
         }
 		i++;
 	}
-	//data->status = 0; //still don't know how to manage returns yet
+	return (0);
 }
 

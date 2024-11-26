@@ -29,6 +29,7 @@ SRCS =	main.c \
 		builtins/export.c \
 		builtins/pwd.c \
 		builtins/unset.c \
+		builtins/utils.c \
 		exec/exec_utils.c \
 		exec/exec.c \
 		exec/pipe_executor.c \

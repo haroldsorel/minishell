@@ -41,8 +41,16 @@ int minishell_launcher(t_data *data)
             return (-1); //to do
         }
         if (executer(data) == -1)
-            return (-1); //to do
+        {
+            free(data->input);
+            free_array_of_pointers(data->env);
+            free_tokens(&(data->tokens));
+            //free_commands(data->exec);
+            return (-1);
+        }
+        //free_commands(data);
         add_history(data->input);
+        free(data->input);
         //free_all(data);
     }
     return (0);
@@ -75,8 +83,7 @@ int main(int argc, char **argv, char **env)
         // to do
         return (1);
     }
-    //free env mallocs
     //free
-    return (1);
+    return (0);
     }
 

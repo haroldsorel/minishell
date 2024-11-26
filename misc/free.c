@@ -19,19 +19,20 @@ void    free_one_token(t_token *token)
     free(token);
 }
 
-void    free_array_of_pointers(char **array)
+void    *free_array_of_pointers(char **array)
 {
     int     i;
 
     i = 0;
     if (array == NULL)
-        return ;
+        return (NULL);
     while (array[i] != NULL)
     {
         free(array[i]);
         i++;
     }
     free(array); //if was malloced
+    return (NULL);
 }
 
 void    free_tokens(t_token **tokens)
@@ -50,4 +51,9 @@ void    free_tokens(t_token **tokens)
     }
     *tokens = NULL;
 }
+/*
+void    *free_commands(t_exec *exec)
+{
 
+}
+*/

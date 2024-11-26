@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	ft_pwd(t_data *data)
+int	ft_pwd(t_data *data)
 {
 	char	*pwd;
 
@@ -19,10 +19,11 @@ void	ft_pwd(t_data *data)
 	if (pwd == NULL)
 	{
 		data->status = 1; //use this or return?
-		return ;
+		return (-1);
 	}
 	write(1, pwd, ft_strlen(pwd));
     write(1, "\n", 1);
 	free(pwd);
 	data->status = 0; //use this or return
+	return (0);
 }
