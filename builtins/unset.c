@@ -18,7 +18,7 @@ static int  is_valid_var(char *v)
     i = 0;
     while (v[i] != '\0')
     {
-        if (ft_isdigit(v[0]) == 1 || (ft_isalnum(v[i]) == 0 && v[i] != '-'))
+        if (ft_isdigit(v[0]) == 1 || (ft_isalnum(v[i]) == 0 && v[i] != '_'))
         {
             ft_putstr_fd("unset: ", 2);
             ft_putstr_fd(v, 2);
@@ -78,6 +78,11 @@ int     ft_unset(t_data *data, char **args)
 
     i = 1;
     ret = 0;
+    if (args[1] == NULL)
+    {
+        ret = 1;
+        ft_putstr_fd("unset: not enough arguments\n", 2);
+    }
     while (args[i] != NULL)
     {
         valid = is_valid_var(args[i]);

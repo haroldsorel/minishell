@@ -165,6 +165,7 @@ int		ft_exit(t_data *data, char **args);
 int		ft_cd(t_data *data, char **args);
 int     ft_unset(t_data *data, char **args);
 int		ft_export(t_data *data, char **args);
+int		ft_strcmp_env(char *s1, char *s2);
 
 
 int		executer(t_data *data);
