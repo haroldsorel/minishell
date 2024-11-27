@@ -23,6 +23,7 @@ SRCS =	main.c \
 		parsing/file_parser.c \
 		parsing/args_parser.c \
 		parsing/heredoc_parser.c \
+		parsing/path_parser.c \
 		builtins/cd.c \
 		builtins/echo.c \
 		builtins/env.c \

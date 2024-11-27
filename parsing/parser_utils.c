@@ -88,33 +88,26 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-void fill_builtin(t_exec *exec, int	execsize)
+void parse_builtin(t_exec *exec)
 {
-	int	i;
 
-	i = 0;
-	if (!exec || !exec->args || !exec->args[0])
-		return ;
-	while (i < execsize)
-	{
-	if (!ft_strcmp(exec[i].args[0], "echo"))
-		exec[i].builtin = FT_ECHO;
-	else if (!ft_strcmp(exec[i].args[0], "cd"))
-		exec[i].builtin = FT_CD;
-	else if (!ft_strcmp(exec[i].args[0], "env"))
-		exec[i].builtin = FT_ENV;
-	else if (!ft_strcmp(exec[i].args[0], "export"))
-		exec[i].builtin = FT_EXPORT;
-	else if (!ft_strcmp(exec[i].args[0], "pwd"))
-		exec[i].builtin = FT_PWD;
-	else if (!ft_strcmp(exec[i].args[0], "unset"))
-		exec[i].builtin = FT_UNSET;
-	else if (!ft_strcmp(exec[i].args[0], "exit"))
-		exec[i].builtin = FT_EXIT;
+	if (!ft_strcmp(exec->args[0], "echo"))
+		exec->builtin = FT_ECHO;
+	else if (!ft_strcmp(exec->args[0], "cd"))
+		exec->builtin = FT_CD;
+	else if (!ft_strcmp(exec->args[0], "env"))
+		exec->builtin = FT_ENV;
+	else if (!ft_strcmp(exec->args[0], "export"))
+		exec->builtin = FT_EXPORT;
+	else if (!ft_strcmp(exec->args[0], "pwd"))
+		exec->builtin = FT_PWD;
+	else if (!ft_strcmp(exec->args[0], "unset"))
+		exec->builtin = FT_UNSET;
+	else if (!ft_strcmp(exec->args[0], "exit"))
+		exec->builtin = FT_EXIT;
 	else
-		exec[i].builtin = NOT_A_BUILTIN;
-	i++;
-	}
+		exec->builtin = NOT_A_BUILTIN;
+	
 }
 
 int count_pipes(t_token **tokens)

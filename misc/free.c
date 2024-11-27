@@ -58,6 +58,13 @@ void    *free_commands(t_exec *exec)
 }
 */
 
+void    exit_minishell_crash(t_data *data)
+{
+    ft_putstr_fd("System Error\n", 2);
+    data->status = 1;
+    exit_minishell(data);
+}
+
 void    exit_minishell(t_data *data)
 {
     free_array_of_pointers(data->env);

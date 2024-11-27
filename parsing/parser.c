@@ -22,7 +22,9 @@ int fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
         return (-1);
 	if (args_parser(*tokens, exec) == -1)
         return (-1);
-    if 
+    parse_builtin(exec);
+    if (path_parser(data, exec, exec->args[0]) == -1)
+        return (-1);
     while (current != NULL && current->type != PIPE)
         current = current->next;
     if (current != NULL && current->type == PIPE)
@@ -72,8 +74,6 @@ int parser(t_data *data)
         return (-1);
     if (fill_commands(data, &(data->tokens)) == -1)
         return (-1);
-    fill_builtin(data->exec, data->exec_size);
-    fill)
     print_commands(data, data->exec);
     free_tokens(&(data->tokens));
     return (0);
