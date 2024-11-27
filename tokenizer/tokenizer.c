@@ -47,7 +47,7 @@ int	tokenizer(t_data *data, char *input)
 		{
 			while (input[i] == ' ')
 				i++;
-			flag = add_token_to_list(&tokens, SPACE, ft_strdup(" ")); //if strdup fails follow up
+			flag = add_token_to_list(&tokens, FT_SPACE, ft_strdup(" ")); //if strdup fails follow up
 		}
 		if (ft_strchr("><|", input[i]) != NULL)
 			flag = handle_special_chars(&tokens, input, &i);

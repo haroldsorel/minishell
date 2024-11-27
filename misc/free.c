@@ -57,3 +57,13 @@ void    *free_commands(t_exec *exec)
 
 }
 */
+
+void    exit_minishell(t_data *data)
+{
+    free_array_of_pointers(data->env);
+    //free_commands(data->exec);
+    //close all files
+    rl_clear_history();
+    printf("\n\nSTATUS : %d\n\n", data->status);
+    exit(data->status);
+}

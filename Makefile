@@ -1,6 +1,7 @@
 NAME = minishell
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g -I. -Ilibft
+READLINE = -lreadline -I/opt/homebrew/opt/readline/include -L/opt/homebrew/opt/readline/lib
 INCLUDES = minishell.h
 
 SRCS =	main.c \
@@ -41,8 +42,9 @@ LIBFT = libft/libft.a
 
 all: $(NAME)
 
-$(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -Llibft -lft -lreadline -L /Users/$(USER)/.brew/opt/readline/lib -o $(NAME)
+$(NAME):	$(OBJS)
+			$(MAKE) bonus -C ./libft
+			$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(READLINE) $(LIBFT)
 
 $(LIBFT):
 	$(MAKE) -C libft

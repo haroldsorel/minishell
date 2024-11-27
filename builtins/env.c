@@ -11,6 +11,32 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void sort_env(char **env)
+{
+    int     i;
+    int     j;
+    int     len;
+    char    *temp;
+
+    i = 0;
+    len = env_len(env);
+    while (i < len - 1) 
+    {
+        j = 0;
+        while (j < len - i - 1)
+        {
+            if (ft_strcmp_env(env[j], env[j + 1]) > 0)
+            {
+                temp = env[j];
+                env[j] = env[j + 1];
+                env[j + 1] = temp;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
 int	ft_env(t_data *data)
 {
 	int	i;

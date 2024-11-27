@@ -36,7 +36,7 @@ void delete_spaces(t_token **token)
     current = *token;
     while (current != NULL)
     {
-        if (current->type == SPACE)
+        if (current->type == FT_SPACE)
         {
             temp = current->next;
             current->prev->next = current->next;
@@ -61,7 +61,7 @@ int concatenater(t_token **tokens)
         if (current->type == WORD || current->type == DQUOTE
             || current->type == QUOTE)
         {
-            if (current->prev != NULL && current->prev->type != SPACE
+            if (current->prev != NULL && current->prev->type != FT_SPACE
                 && current->prev->type != PIPE)
             {
                 temp = current->next;

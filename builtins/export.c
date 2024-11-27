@@ -11,32 +11,6 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static void sort_env(char **env)
-{
-    int     i;
-    int     j;
-    int     len;
-    char    *temp;
-
-    i = 0;
-    len = env_len(env);
-    while (i < len - 1) 
-    {
-        j = 0;
-        while (j < len - i - 1)
-        {
-            if (ft_strcmp_env(env[j], env[j + 1]) > 0)
-            {
-                temp = env[j];
-                env[j] = env[j + 1];
-                env[j + 1] = temp;
-            }
-            j++;
-        }
-        i++;
-    }
-}
-
 static int  print_export(char **env)
 {
     int     i;
@@ -82,6 +56,17 @@ static int  is_valid_var(char *v)
     return (1);
 }
 
+int no_value_handler(t_data *data, char *var)
+{
+    if (is_valid_var(var) == 0)
+        return (1);
+    if (is_in_env(data->env, var) != -1)
+        return (0);
+    if (env_add(data, var) == -1)
+        return (-1);
+    return (0);
+}
+
 int export_handler(t_data *data, char *str)
 {
     char    *key;
@@ -90,11 +75,7 @@ int export_handler(t_data *data, char *str)
 
     value = ft_strchr(str, '=');
     if (value == NULL)
-    {
-        if (is_in_env(data->env, str) == -1)
-            env_add(data, str);
-        return (0);
-    }
+        return (no_value_handler(data, str));
     key = ft_substr(str, 0, value - str);
     if (key == NULL)
         return (-1);
@@ -121,12 +102,13 @@ int ft_export(t_data *data, char **args)
     flag = 0;
     if (args[1] == NULL)
     {
-        print_export(data->env);
+        if (print_export(data->env) == -1)
+            return (-1);
         return (0);
     }
     while (args[i] != NULL)
     {
-        ret = export_handler(data, args[i]) == -1;
+        ret = export_handler(data, args[i]);
         if (ret == -1)
             return (-1);
         if (ret == 1)

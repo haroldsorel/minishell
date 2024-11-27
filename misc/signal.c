@@ -9,5 +9,37 @@
 /*   Updated: 2024/11/16 17:19:38 by haroldsorel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+#include "minishell.h"
+#include <readline/readline.h>
 
 
+void enable_signal_print(void)
+{
+    struct termios termios_new;
+    tcgetattr(STDIN_FILENO, &termios_new);
+    termios_new.c_lflag |= ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &termios_new);
+}
+
+void disable_signal_print(void)
+{
+    struct termios termios_new;
+    tcgetattr(STDIN_FILENO, &termios_new);
+    termios_new.c_lflag &= ~ECHOCTL;
+    tcsetattr(STDIN_FILENO, TCSANOW, &termios_new);
+}
+
+void	sig_interrupt_exec(int signal)
+{
+	g_signal = signal;
+	write(1, "\n", 1);
+}
+
+void	sig_interrupt(int signal)
+{
+	(void)signal;
+	write(1, "\n", 1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}

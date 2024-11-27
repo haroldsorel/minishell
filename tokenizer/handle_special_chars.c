@@ -71,6 +71,12 @@ int handle_heredoc(t_token **tokens, char *input, int *i)
     start = *i;
     if (input[*i] == '\'' || input[*i] == '"')
     {
+        if(add_token_to_list(tokens, S_HEREDOC, extract_word_from_quote(input, i, input[*i])) == -1)
+            return (-1);
+        return (0);
+    }
+    if (input[*i] == '"')
+    {
         if(add_token_to_list(tokens, HEREDOC, extract_word_from_quote(input, i, input[*i])) == -1)
             return (-1);
         return (0);

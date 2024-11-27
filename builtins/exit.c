@@ -11,6 +11,19 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void skip(char *str, int *i, int *neg)
+{
+    while (str[*i] == ' ')
+        (*i)++;
+    if (str[*i] == '+')
+        (*i)++;
+    else if (str[*i] == '-')
+    {
+        (*i)++;
+        *neg = -1;
+    }
+}
+
 int str_to_uint8(char *str)
 {
     int64_t int64_res;
@@ -22,14 +35,8 @@ int str_to_uint8(char *str)
     neg = 1;
     i = 0;
     len = 0;
-    if (str[i] == '+')
-        i++;
-    else if (str[i] == '-')
-    {
-        i++;
-        neg = -1;
-    }
-    while (str[i] != '\0' && len < 19)
+    skip(str, &i, &neg);
+    while (str[i] != '\0' && ft_isdigit(str[i]) == 1 && len < 19)
     {
         if (int64_res > (INT64_MAX - (str[i] - '0')) / 10)
             break ;
@@ -43,15 +50,23 @@ int str_to_uint8(char *str)
 int valid_argument(char *str)
 {
     int i;
+    int flag;
 
     i = 0;
-    if (str[i] == '\0')
-        return (0);
-    if (str[0] == '-' || str[0] == '+')
+    flag = 0;
+    while (str[i] == ' ')
         i++;
+    if (str[i] == '-' || str[i] == '+')
+        i++;
+    if (ft_isalnum(str[i]) == 0 && str[i] != ' ')
+        return (0);
     while (str[i] != '\0')
     {
-        if (ft_isdigit(str[i]) == 0)
+        if (ft_isdigit(str[i]) == 0 && str[i] != ' ')
+            return (0);
+        if (str[i] == ' ')
+            flag = 1;
+        if (flag == 1 && str[i] != ' ')
             return (0);
         i++;
     }
@@ -63,22 +78,25 @@ int ft_exit(t_data *data, char **args)
     int exit_code;
 
     exit_code = data->status;
+    if (args[1] == NULL)
+        exit_minishell(data);
     if (args[1] != NULL && args[2] != NULL)
     {
-        write(1, "Exit: Too Many Arguments\n", 25);
-        return (0); //should not exit the whole programme
+        ft_putstr_fd("exit: too many arguments\n", 2);
+        return (1);
     }
-    if (args[1] == NULL || valid_argument(args[1]) == 0)
+    if (valid_argument(args[1]) == 0)
     {
-        //free everything
-        //exit(exit_code); //do i exit anyway?
-        return (0);   
+        data->status = 0;
+        ft_putstr_fd("exit: not a valid argument: ", 2);
+        ft_putendl_fd(args[1], 2);
+        exit_minishell(data);
+        return (1);   
     }
-    //free everything
     exit_code = str_to_uint8(args[1]);
     if (exit_code < 0)
         exit_code = exit_code + 256;
-    printf("EXITCODE : %d\n", exit_code); //PRINTF TAKE OFF
-    //exit(str_to_uint8(args[1]));
-    return (0); //status should be set to 0
+    data->status = exit_code;
+    exit_minishell(data);
+    return (0);
 }

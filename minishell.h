@@ -26,7 +26,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../libft/libft.h"
-# include "../get_next_line/get_next_line.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -38,6 +37,8 @@
 # include <signal.h>
 # include <errno.h>
 # include <string.h>
+# include <termios.h>
+# include "/opt/homebrew/opt/readline/include/readline/readline.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
@@ -71,10 +72,11 @@ typedef enum e_token_type
 	QUOTE,
 	PIPE,
 	HEREDOC,
+	S_HEREDOC,
 	INFILE,
 	OUTFILE,
 	APPEND,
-	SPACE,
+	FT_SPACE,
 }	t_token_type;
 
 typedef struct s_token
@@ -113,6 +115,8 @@ typedef struct s_data
 	t_exec	*exec;
 }	t_data;
 
+int		g_signal;
+
 void 	init_all(t_data *data, char **env);
 char    *prompt_launcher(t_data *data);
 
@@ -136,8 +140,14 @@ int		env_len(char **env);
 int		env_add(t_data *data, char *str);
 int		env_add_or_replace(t_data *data, char *variable, char *str);
 int		is_in_env(char **env, char *var);
+void	sort_env(char **env);
 
 int		expander(t_data *data);
+void	sig_interrupt(int signal);
+void	disable_signal_print(void);
+void	enable_signal_print(void);
+void	sig_interrupt_exec(int signal);
+char    *ft_insert(char *old_str, char *new_str, int i, int j);
 
 int		count_pipes(t_token **tokens);
 
@@ -145,6 +155,7 @@ int		concatenater(t_token **tokens);
 
 void    free_one_token(t_token *token);
 void    *free_array_of_pointers(char **array);
+void    exit_minishell(t_data *data);
 
 int		syntax_checker(char *input);
 int		syntax_error_handler(char *str);
@@ -157,6 +168,8 @@ int		count_args(t_token *tokens);
 int		args_parser(t_token *token, t_exec *exec);
 int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
 void	fill_builtin(t_exec *exec, int	execsize);
+char	*heredoc_handle_exit_code(t_data *data, char *word, int *i);
+char	*heredoc_handle_env_variable(t_data *data, char *word, int *i);
 
 int		ft_env(t_data *data);
 int		ft_pwd(t_data *data);
@@ -171,5 +184,8 @@ int		ft_strcmp_env(char *s1, char *s2);
 int		executer(t_data *data);
 
 int		ft_strcmp(char *s1, char *s2);
+
+void	rl_replace_line(const char *str, int undo);
+void	rl_clear_history(void);
 
 #endif

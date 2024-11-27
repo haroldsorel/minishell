@@ -11,22 +11,34 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-//void	free_env(char **envv)
-//{
-	//int	i;
-	//int	j;
+static int	increment_SHLVL(t_data *data, char **env)
+{
+	char	*old_value;
+	int		new_value_int;
+	char	*new_value_char;
 
-	//j = 0;
-	//i = env_len(envv);
-	//while (j < i)
-	//{
-	//	free(envv[j]);
-	//	envv[j] = NULL;
-	//	j++;
-	//}
-	//free(envv);
-	//envv = NULL;
-//}
+	old_value = get_env_variable(env, "SHLVL");
+	if (old_value == NULL)
+	{
+		if (env_add(data, "SHLVL=1") == -1)
+			return (-1);
+		return (0);
+	}
+	new_value_int = ft_atoi(old_value);
+	new_value_int++;
+	new_value_char = ft_itoa(new_value_int);
+	if (new_value_char == NULL)
+		return (-1);
+	old_value = new_value_char;
+	new_value_char = ft_strjoin("SHLVL=", new_value_char);
+	free(old_value);
+	if (new_value_char == NULL)
+		return (-1);
+	if (env_add_or_replace(data, "SHLVL", new_value_char) == -1)
+		return(free(new_value_char), -1);
+	free(new_value_char);
+	return (0);
+}
 
 static void	*init_env(t_data *data, char **env)
 {
@@ -44,12 +56,17 @@ static void	*init_env(t_data *data, char **env)
 		i++;
 	}
 	data->env[i] = NULL;
+	increment_SHLVL(data, data->env);
 	return (data->env);
 }
 
 
 static int init_signals()
 {
+	g_signal = 0;
+	disable_signal_print();
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_interrupt);
     return (1);
 }
 

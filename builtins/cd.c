@@ -55,6 +55,8 @@ static int	update_old_pwd(t_data *data, char *old_pwd)
 	free(tmp);
 	if (old_pwd == NULL)
 		return (-1);
+	//if (!access(tmp, R_OK | F_OK))
+	//		ft_printf(1, "%s\n", tmp); understand this with using -
 	if (env_add_or_replace(data, "OLDPWD", old_pwd) == -1)
 	{
 		free(old_pwd);

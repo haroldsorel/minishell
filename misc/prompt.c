@@ -34,7 +34,7 @@ static char *get_prompt(void)
 	prompt = ft_strjoin(tmp, " -> ");
 	free(tmp);
 	if (!prompt)
-		return (NULL); //folow up
+		return (NULL); //follow up
 	return (prompt);
 }
 

@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static char *ft_insert(char *old_str, char *new_str, int i, int j)
+char    *ft_insert(char *old_str, char *new_str, int i, int j)
 {
 	char	*part_1;
 	char	*part_2;
@@ -48,9 +48,9 @@ static int handle_exit_code(t_data *data, t_token *token, int *i)
         return (-1);
 	len = ft_strlen(temp);
 	temp = ft_insert(token->value, temp, *i, *i + 2);
+    free(token->value);
 	if (temp == NULL)
 		return (-1);
-	free(token->value);
 	token->value = temp;
 	return (len);
 }
@@ -73,9 +73,9 @@ static int  handle_env_variable(t_data *data, t_token *token, char *word, int *i
     free(var);
     new_word = ft_insert(word, value, *i, j);
     (*i) = *i + ft_strlen(value);
+    free(word);
     if (new_word == NULL)
         return (-1);
-    free(word);
     token->value = new_word;
     return (0);
 }
