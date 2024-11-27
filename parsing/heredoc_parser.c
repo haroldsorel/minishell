@@ -9,23 +9,48 @@
 /*   Updated: 2024/11/21 00:08:46 by haroldsorel      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "minishell.h"
+
+char    *heredoc_expand(t_data *data, char *input, t_token *token)
+{
+    int i;
+
+    i = 0;
+    if (token->type == S_HEREDOC)
+        return (input);
+    while (input[i] != '\0')
+    {
+        if (input[i] == '$' && input[i + 1] == '?')
+            input = heredoc_handle_exit_code(data, input, &i);
+        else if (input[i] == '$' && 
+			(!ft_isalnum(input[i + 1]) || input[i + 1] == '\0'))
+			i++;
+        else if (input[i] == '$')
+            input = heredoc_handle_env_variable(data, input, &i);
+        else
+            i++;
+        if (input == NULL)
+            return (NULL);
+    }
+    return (input);
+}
 
 int	input_handler(t_data *data, t_token *token, int *end)
 {
 	char	*input;
 
-	input = readline(">");
-    (void)data; //temp
+	input = readline("heredoc>");
+    (void)data;
 	if (input == NULL)
 		return (-1);
-	while (input != NULL && strcmp(input, token->value)) //change strcmp
+	while (input != NULL && ft_strcmp(input, token->value))
 	{
-		//buff = expand(data, input); //implement expand function, see how it relates to the one in tokenize
+		input = heredoc_expand(data, input, token);
+        if (input == NULL)
+            return (-1);
 		write(end[1], input, ft_strlen(input));
 		free(input);
-		input = readline(">");
+		input = readline("heredoc>");
 	}
 	free(input);
 	close(end[1]);
@@ -34,11 +59,10 @@ int	input_handler(t_data *data, t_token *token, int *end)
 
 int fill_input(t_data *data, t_exec *exec, int *end, int old_stdin)
 {
-    (void)data;
-	//if (g_signal == SIGINT)
-	//	data->status = 1;
+	if (g_signal == SIGINT)
+    	data->status = 1;
 	close(end[1]);
-	//signal(SIGINT, sig_interrupt);
+	signal(SIGINT, sig_interrupt);
 	dup2(old_stdin, STDIN_FILENO);
 	if (exec->in_file > 2)
 		close(exec->in_file);
@@ -53,15 +77,15 @@ int heredoc_handler(t_data *data, t_token *token, t_exec *exec)
     int end[2];
     int old_stdin;
 
-    old_stdin = dup(STDIN_FILENO); //stores to restore it later
-    //signal(SIGINT, sig_interrupt_exec);
+    old_stdin = dup(STDIN_FILENO);
+    signal(SIGINT, sig_interrupt_exec);
     pipe(end);
     pid = fork();
     if (pid < 0)
         return (-1);
     if (pid == 0)
     {
-        //signal(SIGINT, SIG_DFL);
+        signal(SIGINT, SIG_DFL);
         if (input_handler(data, token, end) == -1)
             return (-1);
         exit(0);
@@ -79,7 +103,7 @@ int heredoc_parser(t_data *data, t_token *current, t_exec *exec)
 {
 	while (current != NULL && current->type != PIPE)
     {
-        if (current->type == HEREDOC)
+        if (current->type == HEREDOC || current->type == S_HEREDOC)
         {
             if (heredoc_handler(data, current, exec) == -1)
 				return (-1);

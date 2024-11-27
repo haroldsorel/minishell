@@ -11,6 +11,44 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+char	*heredoc_handle_exit_code(t_data *data, char *word, int *i)
+{
+	char	*temp;
+
+	temp = ft_itoa(data->status);
+    if (temp == NULL)
+        return (NULL);
+	temp = ft_insert(word, temp, *i, *i + 2);
+	if (temp == NULL)
+		return (NULL);
+	free(word);
+	return (temp);
+}
+
+char	*heredoc_handle_env_variable(t_data *data, char *word, int *i)
+{
+    int     j;
+    char    *var;
+    char    *value;
+    char    *new_word;
+
+    j = *i;
+    j++;
+    while (word[j] != '\0' && (ft_isalnum(word[j]) || word[j] == '_'))
+        j++;
+    var = ft_substr(word, *i + 1, j - (*i + 1));
+    if (var == NULL)
+        return (NULL);
+    value = get_env_variable(data->env, var);
+    free(var);
+    new_word = ft_insert(word, value, *i, j);
+    (*i) = *i + ft_strlen(value);
+    free(word);
+    if (new_word == NULL)
+        return (NULL);
+    return (new_word);
+}
+
 void	print_one_exec(t_exec exec)
 {
     printf("COMMAND\n");
