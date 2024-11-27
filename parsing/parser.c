@@ -74,7 +74,7 @@ int parser(t_data *data)
         return (-1);
     if (fill_commands(data, &(data->tokens)) == -1)
         return (-1);
-    print_commands(data, data->exec);
+    //print_commands(data, data->exec);
     free_tokens(&(data->tokens));
     return (0);
 }

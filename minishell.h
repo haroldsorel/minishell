@@ -146,6 +146,7 @@ int		expander(t_data *data);
 void	sig_interrupt(int signal);
 void	disable_signal_print(void);
 void	enable_signal_print(void);
+void	sig_quit(int signal);
 void	sig_interrupt_exec(int signal);
 char    *ft_insert(char *old_str, char *new_str, int i, int j);
 
@@ -184,6 +185,8 @@ int		ft_strcmp_env(char *s1, char *s2);
 
 
 int		executer(t_data *data);
+int		builtin_handler(t_data *data, t_exec *exec, t_builtin type);
+int		pipe_executor(t_data *data, t_exec *exec, int index , int stdout_copy);
 
 int		ft_strcmp(char *s1, char *s2);
 

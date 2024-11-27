@@ -12,6 +12,11 @@
 #include "minishell.h"
 #include <readline/readline.h>
 
+void	sig_quit(int signal)
+{
+	write(2, "Quit: 3\n", 8);
+	g_signal = signal;
+}
 
 void enable_signal_print(void)
 {

@@ -49,6 +49,7 @@ int	input_handler(t_data *data, t_token *token, int *end)
         if (input == NULL)
             return (-1);
 		write(end[1], input, ft_strlen(input));
+        write(end[1], "\n", 1);
 		free(input);
 		input = readline("heredoc>");
 	}

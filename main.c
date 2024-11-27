@@ -19,7 +19,7 @@ int minishell_launcher(t_data *data)
     {
         if (prompt_launcher(data) == NULL) //mallocs and free user input next
             return (-1);
-        printf("\n\nUSER_INPUT : %s\n\n", data->input);
+        //printf("\n\nUSER_INPUT : %s\n\n", data->input);
         if (syntax_checker(data->input) == -1) //no mallocs
         {
             free(data->input);
@@ -32,8 +32,8 @@ int minishell_launcher(t_data *data)
             free_array_of_pointers(data->env);
             return (-1); //data to be freed
         }
-        printf("\n\nTOKENS\n\n");
-        print_tokens(data->tokens);
+        //printf("\n\nTOKENS\n\n");
+        //print_tokens(data->tokens);
         if (parser(data) == -1)
         {
             free(data->input);

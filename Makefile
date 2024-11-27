@@ -32,10 +32,9 @@ SRCS =	main.c \
 		builtins/pwd.c \
 		builtins/unset.c \
 		builtins/utils.c \
-		exec/exec_utils.c \
 		exec/exec.c \
 		exec/pipe_executor.c \
-		exec/pipe_executor_utils.c
+		exec/builtin_executor.c
 
 	
 OBJS = $(SRCS:.c=.o)

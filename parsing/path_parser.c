@@ -70,10 +70,17 @@ static char *find_executable(t_data *data, char *cmd, char **hosts, int i)
 static char *find_path(t_data *data, char *cmd)
 {
     char    *path;
-    char    **hosts; //what happens if path was unset
+    char    *path_value;
+    char    **hosts;
     int     i;
 
-    hosts = ft_split(get_env_variable(data->env, "PATH"), ':');
+    path_value = get_env_variable(data->env, "PATH");
+    if (path_value == NULL)
+    {
+        print_error(data, cmd, 1);
+        return (NULL);
+    }
+    hosts = ft_split(path_value, ':');
     i = 0;
     if (hosts == NULL)
         exit_minishell_crash(data);

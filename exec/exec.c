@@ -11,30 +11,6 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int builtin_executer(t_data *data, t_builtin type)
-{
-    int ret;
-
-    ret = 0;
-    if (type == FT_ENV)
-        ret = ft_env(data);
-    else if (type == FT_ECHO)
-        ret = ft_echo(data->exec->args);
-    else if (type == FT_CD)
-        ret = ft_cd(data, data->exec->args);
-    else if (type == FT_EXPORT)
-        ret = ft_export(data, data->exec->args);
-    else if (type == FT_PWD)
-        ret = ft_pwd(data);
-    else if (type == FT_UNSET)
-        ret = ft_unset(data, data->exec->args);
-    else if (type == FT_EXIT)
-        ret = ft_exit(data, data->exec->args);
-    data->status = ret;
-    printf("\n\n STATUS = %d\n\n", data->status);
-    return (ret);
-}
-/*
 int executer_handler(t_data *data, int stdout_cpy)
 {
     int i;
@@ -44,21 +20,63 @@ int executer_handler(t_data *data, int stdout_cpy)
     number_of_child_processes = data->exec_size;
     while (i < number_of_child_processes)
     {
-        data->exec[i].path = path_parser(data, data->exec[i]);
-
+        pipe_executor(data, &(data->exec[i]), i, stdout_cpy);
+        i++;
     }
+    return (0);
 }
-*/
+
+static void	receive_sig(t_data *data)
+{
+	if (g_signal == SIGINT)
+	{
+		data->status = 130;
+		g_signal = 0;
+	}
+	if (g_signal == SIGQUIT)
+	{
+		data->status = 131;
+		g_signal = 0;
+	}
+}
+
+static void	wait_for_child_processes_to_finish(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->exec_size)
+	{
+		wait(NULL);
+		i++;
+	}
+}
+
 int executer(t_data *data)
 {
-    //int stdin_copy;
-    //int stdout_copy;
+    int status;
+    int stdin_copy;
+    int stdout_copy;
 
     if (data->exec[0].builtin != 0 && data->exec_size == 1)
-        if (builtin_executer(data, data->exec[0].builtin) == -1)
-            return (-1);
-    //stdin_copy = dup(STDIN_FILENO);
-    //stdout_copy = dup(STDOUT_FILENO);
-    //executer_handler(data, stdout_copy);
+    {
+        if (builtin_handler(data, &(data->exec[0]), data->exec[0].builtin) == -1)
+           return (-1);
+        return (0);
+    }
+    stdin_copy = dup(STDIN_FILENO);
+    stdout_copy = dup(STDOUT_FILENO);
+    executer_handler(data, stdout_copy);
+    dup2(stdin_copy, STDIN_FILENO);
+    dup2(stdout_copy, STDOUT_FILENO);
+    close(stdin_copy);
+    close(stdout_copy);
+    waitpid(data->pid, &status, 0);
+    data->status = WEXITSTATUS(status);
+    signal(SIGQUIT, SIG_IGN);
+    signal(SIGINT, sig_interrupt);
+	disable_signal_print();
+	receive_sig(data);
+    wait_for_child_processes_to_finish(data);
     return (0);
 }

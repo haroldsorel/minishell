@@ -69,7 +69,7 @@ int handle_heredoc(t_token **tokens, char *input, int *i)
     while (input[*i] == ' ')
         (*i)++;
     start = *i;
-    if (input[*i] == '\'' || input[*i] == '"')
+    if (input[*i] == '\'')
     {
         if(add_token_to_list(tokens, S_HEREDOC, extract_word_from_quote(input, i, input[*i])) == -1)
             return (-1);
