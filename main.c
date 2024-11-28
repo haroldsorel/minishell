@@ -11,65 +11,27 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void    print_tokens(t_token *tokens);
-
 int minishell_launcher(t_data *data)
 {
     while(1)
     {
-        if (prompt_launcher(data) == NULL) //mallocs and free user input next
-            return (-1);
-        //printf("\n\nUSER_INPUT : %s\n\n", data->input);
-        if (syntax_checker(data->input) == -1) //no mallocs
+        if (prompt_launcher(data) == NULL)
+            return (exit_minishell_crash(data, USER_INPUT), -1);
+        if (syntax_checker(data->input) == -1)
         {
             free(data->input);
-            free_array_of_pointers(data->env);
-            return (-1);
+            continue ;
         }
         if (tokenizer(data, data->input) == -1)
-        {
-            free(data->input);
-            free_array_of_pointers(data->env);
-            return (-1); //data to be freed
-        }
-        //printf("\n\nTOKENS\n\n");
-        //print_tokens(data->tokens);
+            return (exit_minishell_crash(data, TOKENIZATION), -1);
         if (parser(data) == -1)
-        {
-            free(data->input);
-            free_array_of_pointers(data->env);
-            free_tokens(&(data->tokens));
-            return (-1); //to do
-        }
+            return(exit_minishell_crash(data, PARSING), -1);
         if (executer(data) == -1)
-        {
-            free(data->input);
-            free_array_of_pointers(data->env);
-            free_tokens(&(data->tokens));
-            //free_commands(data->exec);
-            return (-1);
-        }
-        //free_commands(data);
-        add_history(data->input);
-        free(data->input);
-        //free_all(data);
+            return (exit_minishell_crash(data, EXECUTION), -1);
+        free_all(data);
+        return (0);
     }
     return (0);
-}
-
-void    print_tokens(t_token *tokens)
-{
-    t_token *current;
-
-    if (tokens == NULL)
-        return ;
-    current = tokens;
-    while (current != NULL)
-    {
-        printf("%d:%s\n", current->type, current->value);
-        current = current->next;
-    }
-    printf("\n\n");
 }
 
 int main(int argc, char **argv, char **env)
@@ -80,11 +42,7 @@ int main(int argc, char **argv, char **env)
     (void)argv;
     init_all(&data, env); //env has to be modified it is just duplicated now and there is a malloc
     if (minishell_launcher(&data) == -1)
-    {
-        // to do
         return (1);
-    }
-    //free
     return (0);
-    }
+}
 

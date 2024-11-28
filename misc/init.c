@@ -72,7 +72,6 @@ static int init_signals()
 
 static void    init_data(t_data *data)
 {
-    data->args = NULL;
     data->tokens = NULL;
     data->exec = NULL;
     data->input = NULL;

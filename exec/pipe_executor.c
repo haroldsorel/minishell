@@ -46,7 +46,7 @@ int pipe_executor(t_data *data, t_exec *exec, int index , int stdout_copy)
     int link[2];
 
     if (pipe(link) == -1)
-        exit_minishell_crash(data);
+        exit_minishell_crash(data, EXECUTION);
     if (index < data->exec_size - 1)
         dup2(link[1], STDOUT_FILENO);
     else
@@ -57,7 +57,7 @@ int pipe_executor(t_data *data, t_exec *exec, int index , int stdout_copy)
         dup2(exec->out_file, STDOUT_FILENO);
     data->pid = fork();
     if (data->pid < 0)
-        exit_minishell_crash(data);
+        exit_minishell_crash(data, EXECUTION);
     if (data->pid == 0)
         handle_child(data, exec, link);
     else

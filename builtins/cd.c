@@ -15,7 +15,7 @@ static void		print_error(char *dir, char **args)
 {
 	ft_putstr_fd("cd: ", 2);
 	if (args[1] != NULL && args[2] != NULL)
-		ft_putstr_fd("string not in pwd: ", 2);
+		ft_putstr_fd("cd: string not in pwd: ", 2);
 	else
 	{
 		ft_putstr_fd(strerror(errno), 2);
@@ -55,8 +55,6 @@ static int	update_old_pwd(t_data *data, char *old_pwd)
 	free(tmp);
 	if (old_pwd == NULL)
 		return (-1);
-	//if (!access(tmp, R_OK | F_OK))
-	//		ft_printf(1, "%s\n", tmp); understand this with using -
 	if (env_add_or_replace(data, "OLDPWD", old_pwd) == -1)
 	{
 		free(old_pwd);
@@ -74,13 +72,21 @@ static char	*get_dir(t_data *data, char **args)
 	{
 		dir = get_env_variable(data->env, "HOME");
 		if (dir == NULL)
-			ft_putstr_fd("minishell : cd: HOME not set\n", 2);
+			ft_putstr_fd("cd: HOME not set\n", 2);
 	}
 	else if (ft_strcmp(args[1], "-") == 0)
 	{
 		dir = get_env_variable(data->env, "OLDPWD");
 		if (dir == NULL)
-			ft_putstr_fd("minishell : cd: OLDPWD not set\n", 2);
+			ft_putstr_fd("cd: OLDPWD not set\n", 2);
+		else
+			ft_putendl_fd(get_env_variable(data->env, "OLDPWD"), 1);
+	}
+	else if (ft_strcmp(args[1], "~") == 0)
+	{
+		dir = get_env_variable(data->env, "HOME");
+		if (dir == NULL)
+			ft_putstr_fd("cd: HOME not set\n", 2);
 	}
 	else
 		dir = args[1];

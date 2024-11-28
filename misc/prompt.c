@@ -19,7 +19,7 @@ static char *get_prompt(void)
 
     prompt = ft_strdup("");
     if (prompt == NULL)
-        return (NULL); //follow up
+        return (NULL);
 	cwd = getcwd(NULL, 0);
 	if (cwd != NULL)
 	{
@@ -28,13 +28,15 @@ static char *get_prompt(void)
 		tmp = ft_strjoin(prompt, tmp);
 		free(cwd);
 		free(prompt);
+		if (tmp == NULL)
+			return (NULL);
 	}
 	else
 		tmp = prompt;
 	prompt = ft_strjoin(tmp, " -> ");
 	free(tmp);
-	if (!prompt)
-		return (NULL); //follow up
+	if (prompt == NULL)
+		return (NULL);
 	return (prompt);
 }
 

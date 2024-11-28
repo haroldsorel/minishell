@@ -52,6 +52,14 @@
 # define WHITE "\001\033[0;97m\002"
 # define DEFAULT "\001\033[0;39m\002"
 
+typedef enum e_steps
+{
+	USER_INPUT,
+	TOKENIZATION,
+	PARSING,
+	EXECUTION,
+}	t_steps;
+
 typedef enum e_builtin
 {
 	NOT_A_BUILTIN,
@@ -105,7 +113,6 @@ typedef struct s_exec
 typedef struct s_data
 {
 	char	**env;
-	char	**args;
 	char	*input;
 	int		status;
 	int		pid;
@@ -156,7 +163,7 @@ int		concatenater(t_token **tokens);
 void    free_one_token(t_token *token);
 void    *free_array_of_pointers(char **array);
 void    exit_minishell(t_data *data);
-void    exit_minishell_crash(t_data *data);
+void    exit_minishell_crash(t_data *data, t_steps step);
 
 int		syntax_checker(char *input);
 int		syntax_error_handler(char *str);
@@ -191,5 +198,8 @@ int		ft_strcmp(char *s1, char *s2);
 
 void	rl_replace_line(const char *str, int undo);
 void	rl_clear_history(void);
+
+void    *free_commands(t_data *data);
+void	free_all(t_data *data);
 
 #endif

@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+int print_tokens(t_token *tokens);
+
 int fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
 {
     t_token *current;
@@ -19,7 +21,7 @@ int fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
     if (file_parser(data, *tokens, exec) == -1)
         return (-1);
 	if (heredoc_parser(data, current, exec) == -1)
-        return (-1);
+       return (-1);
 	if (args_parser(*tokens, exec) == -1)
         return (-1);
     parse_builtin(exec);
@@ -70,11 +72,13 @@ int init_exec(t_data *data)
 
 int parser(t_data *data)
 {
+    t_token *head;
+
+    head = data->tokens;
     if (init_exec(data) == -1)
         return (-1);
     if (fill_commands(data, &(data->tokens)) == -1)
         return (-1);
-    //print_commands(data, data->exec);
-    free_tokens(&(data->tokens));
+    data->tokens = head;
     return (0);
 }

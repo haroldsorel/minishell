@@ -14,7 +14,8 @@
 
 int syntax_error_handler(char *str)
 {
-    printf("Syntax Error : %s\n", str); //PRINTF REPLACE  and just put str
+    ft_putstr_fd("Syntax Error: ", 2);
+    ft_putendl_fd(str, 2);
     return (-1);
 }
 

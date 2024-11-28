@@ -52,14 +52,14 @@ static char *find_executable(t_data *data, char *cmd, char **hosts, int i)
     if (temp == NULL)
     {
         free_array_of_pointers(hosts);
-        exit_minishell_crash(data);
+        exit_minishell_crash(data, PARSING);
     }
     path = ft_strjoin(temp, cmd);
     free(temp);
     if (path == NULL)
     {
         free_array_of_pointers(hosts);
-        exit_minishell_crash(data);
+        exit_minishell_crash(data, PARSING);
     }
     if (access(path, F_OK | X_OK) != -1)
 		return (path);
@@ -83,7 +83,7 @@ static char *find_path(t_data *data, char *cmd)
     hosts = ft_split(path_value, ':');
     i = 0;
     if (hosts == NULL)
-        exit_minishell_crash(data);
+        exit_minishell_crash(data, PARSING);
     while (hosts[i] != NULL)
     {
         path = find_executable(data, cmd, hosts, i);
@@ -106,7 +106,7 @@ static int  is_valid_path(t_data *data, char *path)
         }
         path = ft_strdup(path);
         if (path == NULL)
-            exit_minishell_crash(data);
+            exit_minishell_crash(data, PARSING);
         return (1);
     }
     print_error(data, path, 3);
@@ -133,5 +133,7 @@ int path_parser(t_data *data, t_exec *exec, char *cmd)
     }
     else
         exec->path = find_path(data, cmd);
+    if (exec->path == NULL)
+        return (-1);
     return (0);
 }
