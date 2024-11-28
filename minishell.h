@@ -38,7 +38,6 @@
 # include <errno.h>
 # include <string.h>
 # include <termios.h>
-# include "/opt/homebrew/opt/readline/include/readline/readline.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "libft.h"
