@@ -11,59 +11,59 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-
-
-static t_token  *new_token(t_token_type type, char *value)
+static t_token	*new_token(t_token_type type, char *value)
 {
-    t_token *new;
+	t_token	*new;
 
-    new = malloc(sizeof(t_token));
-    if (new == NULL)
-        return (NULL);
-    new->next = NULL;
-    new->prev = NULL;
-    new->value = value;
-    new->type = type;
-    return (new);
-}
-int    add_token_to_list(t_token **tokens, t_token_type type, char *value)
-{
-    t_token *new;
-    t_token *current;
-
-    current = *tokens;
-    new = new_token(type, value);
-    if (new == NULL)
-    {
-        //free token list
-        return (-1);
-    }
-    if (*tokens == NULL)
-    {
-        *tokens = new;
-        return (0);
-    }
-
-    while (current->next != NULL)
-        current = current->next;
-    current->next = new;
-    new->prev = current;
-    return (0);
+	new = malloc(sizeof(t_token));
+	if (new == NULL)
+		return (NULL);
+	new->next = NULL;
+	new->prev = NULL;
+	new->value = value;
+	new->type = type;
+	return (new);
 }
 
-char    *extract_word_from_quote(char *line, int *i, char quote)
+int	add_token_to_list(t_token **tokens, t_token_type type, char *value)
 {
-    char    *extracted_word;
-    int     start;
+	t_token	*new;
+	t_token	*current;
 
-    (*i)++;
-    extracted_word = NULL;
-    start = *i;
-    while (line[*i] != '\0' && line[*i] != quote)
-        (*i)++;
-    extracted_word = ft_substr(line, start, *i - start);
-    if (extracted_word == NULL)
-        return (NULL);
-    (*i)++;
-    return (extracted_word);
+	current = *tokens;
+	if (value == NULL)
+		return (-1);
+	new = new_token(type, value);
+	if (new == NULL)
+	{
+		free_tokens(tokens);
+		return (-1);
+	}
+	if (*tokens == NULL)
+	{
+		*tokens = new;
+		return (0);
+	}
+	while (current->next != NULL)
+		current = current->next;
+	current->next = new;
+	new->prev = current;
+	return (0);
+}
+
+char	*extract_word_from_quote(char *line, int *i, char quote)
+{
+	char	*extracted_word;
+	int		start;
+
+	(*i)++;
+	extracted_word = NULL;
+	start = *i;
+	while (line[*i] != '\0' && line[*i] != quote)
+		(*i)++;
+	extracted_word = ft_substr(line, start, *i - start);
+	if (extracted_word == NULL)
+		return (NULL);
+	(*i)++;
+	return (extracted_word);
 }

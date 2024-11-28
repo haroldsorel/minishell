@@ -31,7 +31,7 @@ char	*get_env_variable(char **env, char *var)
 	i = 0;
 	if (!var || !var[0] || env == NULL)
 		return (NULL);
-	while ((env[i] && ft_strncmp(env[i], var, ft_strlen(var))) 
+	while ((env[i] && ft_strncmp(env[i], var, ft_strlen(var)))
 		|| (env[i] && env[i][ft_strlen(var)] != '='))
 		i++;
 	if (env[i])
@@ -42,5 +42,3 @@ char	*get_env_variable(char **env, char *var)
 	}
 	return (NULL);
 }
-
-

@@ -11,20 +11,20 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static char *get_prompt(void)
+static char	*get_prompt(void)
 {
 	char	*tmp;
 	char	*cwd;
 	char	*prompt;
 
-    prompt = ft_strdup("");
-    if (prompt == NULL)
-        return (NULL);
+	prompt = ft_strdup("");
+	if (prompt == NULL)
+		return (NULL);
 	cwd = getcwd(NULL, 0);
 	if (cwd != NULL)
 	{
 		tmp = ft_strrchr(cwd, '/');
-        tmp++;
+		tmp++;
 		tmp = ft_strjoin(prompt, tmp);
 		free(cwd);
 		free(prompt);
@@ -40,21 +40,21 @@ static char *get_prompt(void)
 	return (prompt);
 }
 
-char    *prompt_launcher(t_data *data)
+char	*prompt_launcher(t_data *data)
 {
-    char    *prompt;
-    char    *user_input;
+	char	*prompt;
+	char	*user_input;
 
-    prompt = get_prompt();
-    if (prompt == NULL)
-        return (NULL);
-    user_input = readline(prompt);
-    free(prompt);
+	prompt = get_prompt();
+	if (prompt == NULL)
+		return (NULL);
+	user_input = readline(prompt);
+	free(prompt);
 	if (user_input == NULL)
 		return (NULL);
-    data->input = ft_strtrim(user_input, " \t\n\v\f\r");
-    free(user_input);
-    if(data->input == NULL)
-        return (NULL);
-    return (prompt);
+	data->input = ft_strtrim(user_input, " \t\n\v\f\r");
+	free(user_input);
+	if (data->input == NULL)
+		return (NULL);
+	return (prompt);
 }

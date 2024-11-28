@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int file_handler(t_data *data, t_token *token, t_exec *exec)
+int	file_handler(t_data *data, t_token *token, t_exec *exec)
 {
-    int	fd;
+	int	fd;
 
 	fd = -1;
 	if (token->type == INFILE)
@@ -36,16 +36,16 @@ int file_handler(t_data *data, t_token *token, t_exec *exec)
 		exec->out_file = fd;
 	else
 		close(fd);
-    return (0);
+	return (0);
 }
 
-int file_parser(t_data *data, t_token *current, t_exec *exec)
+int	file_parser(t_data *data, t_token *current, t_exec *exec)
 {
 	while (current != NULL && current->type != PIPE)
-    {
-        if (current->type == INFILE || current->type == OUTFILE
-            || current->type == APPEND)
-            if (file_handler(data, current, exec) == -1)
+	{
+		if (current->type == INFILE || current->type == OUTFILE
+			|| current->type == APPEND)
+			if (file_handler(data, current, exec) == -1)
 				return (-1);
 		current = current->next;
 	}

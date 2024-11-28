@@ -18,20 +18,22 @@ void	sig_quit(int signal)
 	g_signal = signal;
 }
 
-void enable_signal_print(void)
+void	enable_signal_print(void)
 {
-    struct termios termios_new;
-    tcgetattr(STDIN_FILENO, &termios_new);
-    termios_new.c_lflag |= ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &termios_new);
+	struct termios	termios_new;
+
+	tcgetattr(STDIN_FILENO, &termios_new);
+	termios_new.c_lflag |= ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios_new);
 }
 
-void disable_signal_print(void)
+void	disable_signal_print(void)
 {
-    struct termios termios_new;
-    tcgetattr(STDIN_FILENO, &termios_new);
-    termios_new.c_lflag &= ~ECHOCTL;
-    tcsetattr(STDIN_FILENO, TCSANOW, &termios_new);
+	struct termios	termios_new;
+
+	tcgetattr(STDIN_FILENO, &termios_new);
+	termios_new.c_lflag &= ~ECHOCTL;
+	tcsetattr(STDIN_FILENO, TCSANOW, &termios_new);
 }
 
 void	sig_interrupt_exec(int signal)

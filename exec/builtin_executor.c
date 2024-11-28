@@ -11,32 +11,32 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int  builtin_executer(t_data *data, t_exec *exec, t_builtin type)
+static int	builtin_executer(t_data *data, t_exec *exec, t_builtin type)
 {
-    int ret;
+	int	ret;
 
-    ret = 0;
-    if (type == FT_ENV)
-        ret = ft_env(data);
-    else if (type == FT_ECHO)
-        ret = ft_echo(exec->args);
-    else if (type == FT_CD)
-        ret = ft_cd(data, exec->args);
-    else if (type == FT_EXPORT)
-        ret = ft_export(data, exec->args);
-    else if (type == FT_PWD)
-        ret = ft_pwd(data);
-    else if (type == FT_UNSET)
-        ret = ft_unset(data, exec->args);
-    else if (type == FT_EXIT)
-        ret = ft_exit(data, exec->args);
-    data->status = ret;
-    return (ret);
+	ret = 0;
+	if (type == FT_ENV)
+		ret = ft_env(data);
+	else if (type == FT_ECHO)
+		ret = ft_echo(exec->args);
+	else if (type == FT_CD)
+		ret = ft_cd(data, exec->args);
+	else if (type == FT_EXPORT)
+		ret = ft_export(data, exec->args);
+	else if (type == FT_PWD)
+		ret = ft_pwd(data);
+	else if (type == FT_UNSET)
+		ret = ft_unset(data, exec->args);
+	else if (type == FT_EXIT)
+		ret = ft_exit(data, exec->args);
+	data->status = ret;
+	return (ret);
 }
 
-int builtin_handler(t_data *data, t_exec *exec, t_builtin type)
+int	builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 {
-    int	stdin_cpy;
+	int	stdin_cpy;
 	int	stdout_cpy;
 
 	stdin_cpy = dup(STDIN_FILENO);
@@ -48,11 +48,10 @@ int builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 	if (exec->out_file > 2)
 		dup2(exec->out_file, STDOUT_FILENO);
 	if (builtin_executer(data, exec, type) == -1)
-        return (-1);
+		return (-1);
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);
 	close(stdin_cpy);
 	close(stdout_cpy);
-    return (0);
+	return (0);
 }
-

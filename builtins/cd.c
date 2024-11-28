@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static void		print_error(char *dir, char **args)
+static void	print_error(char *dir, char **args)
 {
 	ft_putstr_fd("cd: ", 2);
 	if (args[1] != NULL && args[2] != NULL)

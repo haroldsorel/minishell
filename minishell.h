@@ -109,7 +109,6 @@ typedef struct s_exec
 	char		**args;
 }	t_exec;
 
-
 typedef struct s_data
 {
 	char	**env;
@@ -123,18 +122,17 @@ typedef struct s_data
 
 int		g_signal;
 
-void 	init_all(t_data *data, char **env);
-char    *prompt_launcher(t_data *data);
+int		init_all(t_data *data, char **env);
 
+char	*prompt_launcher(t_data *data);
 
-void	lexer(t_data *data, char **line);
-void    free_tokens(t_token **tokens);
+void	free_tokens(t_token **tokens);
 int		handle_word(t_token **tokens, char *input, int *i);
 int		handle_quotes(t_token **tokens, char *input, int *i);
 int		handle_dquotes(t_token **tokens, char *input, int *i);
 int		handle_pipe(t_token **tokens, int *i);
 int		add_token_to_list(t_token **tokens, t_token_type type, char *value);
-char    *extract_word_from_quote(char *line, int *i, char quote);
+char	*extract_word_from_quote(char *line, int *i, char quote);
 int		handle_append(t_token **tokens, char *input, int *i);
 int		handle_heredoc(t_token **tokens, char *input, int *i);
 int		handle_infile(t_token **tokens, char *input, int *i);
@@ -149,29 +147,27 @@ int		is_in_env(char **env, char *var);
 void	sort_env(char **env);
 
 int		expander(t_data *data);
+
 void	sig_interrupt(int signal);
 void	disable_signal_print(void);
 void	enable_signal_print(void);
 void	sig_quit(int signal);
-void	sig_interrupt_exec(int signal);
-char    *ft_insert(char *old_str, char *new_str, int i, int j);
-
+void	sig_interrupt_exec(int signal);	
+char	*ft_insert(char *old_str, char *new_str, int i, int j);
 int		count_pipes(t_token **tokens);
-
 int		concatenater(t_token **tokens);
 
-void    free_one_token(t_token *token);
-void    *free_array_of_pointers(char **array);
-void    exit_minishell(t_data *data);
-void    exit_minishell_crash(t_data *data, t_steps step);
+void	free_one_token(t_token *token);
+void	*free_array_of_pointers(char **array);
+void	exit_minishell(t_data *data);
+void	exit_minishell_crash(t_data *data, t_steps step);
 
 int		syntax_checker(char *input);
 int		syntax_error_handler(char *str);
 int		quotes_skipper(char *input, int *i);
 
 int		parser(t_data *data);
-void	print_commands(t_data *data, t_exec *exec);
-int 	file_parser(t_data *data, t_token *token, t_exec *exec);
+int		file_parser(t_data *data, t_token *token, t_exec *exec);
 int		count_args(t_token *tokens);
 int		args_parser(t_token *token, t_exec *exec);
 int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
@@ -185,21 +181,18 @@ int		ft_pwd(t_data *data);
 int		ft_echo(char **args);
 int		ft_exit(t_data *data, char **args);
 int		ft_cd(t_data *data, char **args);
-int     ft_unset(t_data *data, char **args);
+int		ft_unset(t_data *data, char **args);
 int		ft_export(t_data *data, char **args);
 int		ft_strcmp_env(char *s1, char *s2);
 
-
 int		executer(t_data *data);
 int		builtin_handler(t_data *data, t_exec *exec, t_builtin type);
-int		pipe_executor(t_data *data, t_exec *exec, int index , int stdout_copy);
-
+int		pipe_executor(t_data *data, t_exec *exec, int index, int stdout_copy);
 int		ft_strcmp(char *s1, char *s2);
-
 void	rl_replace_line(const char *str, int undo);
 void	rl_clear_history(void);
-
-void    *free_commands(t_data *data);
+void	*free_commands(t_data *data);
 void	free_all(t_data *data);
+int		is_directory(const char *path);
 
 #endif

@@ -1,4 +1,3 @@
-
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
@@ -12,15 +11,13 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void    print_tokens(t_token *tokens);
-
-int handle_special_chars(t_token **tokens, char *input, int *i)
+int	handle_special_chars(t_token **tokens, char *input, int *i)
 {
 	int	flag;
 
 	flag = 0;
 	if (input[*i] == '|')
-			flag = handle_pipe(tokens, i);
+		flag = handle_pipe(tokens, i);
 	else if (input[*i] == '>' && input[*i + 1] == '>')
 		flag = handle_append(tokens, input, i);
 	else if (input[*i] == '<' && input[*i + 1] == '<')
@@ -34,11 +31,11 @@ int handle_special_chars(t_token **tokens, char *input, int *i)
 
 int	tokenizer(t_data *data, char *input)
 {
-	t_token	*tokens; //this step is not necessary just put data->tokens int the arguments
+	t_token	*tokens;
 	int		i;
 	int		flag;
 
-	tokens = NULL; //idem
+	tokens = NULL;
 	i = 0;
 	flag = 0;
 	while (input[i] != '\0')
@@ -47,7 +44,7 @@ int	tokenizer(t_data *data, char *input)
 		{
 			while (input[i] == ' ')
 				i++;
-			flag = add_token_to_list(&tokens, FT_SPACE, ft_strdup(" ")); //if strdup fails follow up
+			flag = add_token_to_list(&tokens, FT_SPACE, ft_strdup(" "));
 		}
 		if (ft_strchr("><|", input[i]) != NULL)
 			flag = handle_special_chars(&tokens, input, &i);
@@ -60,7 +57,7 @@ int	tokenizer(t_data *data, char *input)
 		if (flag == -1)
 			return (-1);
 	}
-	data->tokens = tokens; //idem
+	data->tokens = tokens;
 	if (expander(data) == -1 || concatenater(&tokens) == -1)
 		return (-1);
 	return (0);
