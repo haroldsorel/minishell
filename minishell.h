@@ -169,10 +169,10 @@ int		quotes_skipper(char *input, int *i);
 int		parser(t_data *data);
 int		file_parser(t_data *data, t_token *token, t_exec *exec);
 int		count_args(t_token *tokens);
-int		args_parser(t_token *token, t_exec *exec);
+int		args_parser(t_data *data, t_token *token, t_exec *exec);
 int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
 void	parse_builtin(t_exec *exec);
-char	*heredoc_handle_exit_code(t_data *data, char *word, int *i);
+char	*heredoc_handle_special_variable(t_data *data, char *word, int *i);
 char	*heredoc_handle_env_variable(t_data *data, char *word, int *i);
 int		path_parser(t_data *data, t_exec *exec, char *cmd);
 

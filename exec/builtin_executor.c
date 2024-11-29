@@ -41,8 +41,8 @@ int	builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 
 	stdin_cpy = dup(STDIN_FILENO);
 	stdout_cpy = dup(STDOUT_FILENO);
-	//if (type == FT_EXIT)
-	//	ft_printf(1, "exit\n");
+	if (type == FT_EXIT)
+		ft_putstr_fd("exit\n", 1);
 	if (exec->in_file > -1)
 		dup2(exec->in_file, STDIN_FILENO);
 	if (exec->out_file > 2)

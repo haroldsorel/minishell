@@ -11,6 +11,28 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+static void	print_error(t_data *data, char *cmd)
+{
+	if (cmd[0] == '.' && cmd[1] == '/' && is_directory(cmd) == 1)
+	{
+		ft_putstr_fd(cmd, 2);
+		ft_putendl_fd(": is a directory\n", 2);
+		data->status = 126;
+	}
+	if (cmd[0] == '/')
+	{
+		ft_putstr_fd("no such file or directory: ", 2);
+		ft_putendl_fd(cmd, 2);
+		data->status = 127;
+	}
+	else
+	{
+		ft_putstr_fd("command not found: ", 2);
+		ft_putendl_fd(cmd, 2);
+		data->status = 127;
+	}
+}
+
 int	handle_child(t_data *data, t_exec *exec, int *link)
 {
 	close(link[1]);
@@ -23,6 +45,11 @@ int	handle_child(t_data *data, t_exec *exec, int *link)
 	if (exec->builtin != 0)
 	{
 		builtin_handler(data, exec, exec->builtin);
+		exit (data->status);
+	}
+	if (exec->builtin == 0 && exec->path == NULL)
+	{
+		print_error(data, exec->args[0]);
 		exit (data->status);
 	}
 	else if (execve(exec->path, exec->args, data->env) < 0)

@@ -27,7 +27,7 @@ int	count_args(t_token *current)
 	return (count);
 }
 
-int	args_parser(t_token *token, t_exec *exec)
+int	args_parser(t_data *data, t_token *token, t_exec *exec)
 {
 	int	size;
 	int	i;
@@ -36,7 +36,7 @@ int	args_parser(t_token *token, t_exec *exec)
 	i = 0;
 	exec->args = malloc((size + 1) * sizeof(char *));
 	if (exec->args == NULL)
-		return (-1);
+		exit_minishell_crash(data, PARSING);
 	while (token != NULL && token->type != PIPE)
 	{
 		if (token->type == WORD || token->type == QUOTE
@@ -46,7 +46,7 @@ int	args_parser(t_token *token, t_exec *exec)
 			if (exec->args[i] == NULL)
 			{
 				free_array_of_pointers(exec->args);
-				return (-1);
+				exit_minishell_crash(data, PARSING);
 			}
 			i++;
 		}

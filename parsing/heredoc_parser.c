@@ -20,8 +20,8 @@ char	*heredoc_expand(t_data *data, char *input, t_token *token)
 		return (input);
 	while (input[i] != '\0')
 	{
-		if (input[i] == '$' && input[i + 1] == '?')
-			input = heredoc_handle_exit_code(data, input, &i);
+		if (input[i] == '$' && (input[i + 1] == '?' || input[i + 1] == '$'))
+			input = heredoc_handle_special_variable(data, input, &i);
 		else if (input[i] == '$'
 			&& (!ft_isalnum(input[i + 1]) || input[i + 1] == '\0'))
 			i++;
@@ -40,14 +40,11 @@ int	input_handler(t_data *data, t_token *token, int *end)
 	char	*input;
 
 	input = readline("heredoc>");
-	(void)data;
 	if (input == NULL)
-		return (-1);
+		exit_minishell_crash(data, PARSING);
 	while (input != NULL && ft_strcmp(input, token->value))
 	{
 		input = heredoc_expand(data, input, token);
-		if (input == NULL)
-			return (-1);
 		write(end[1], input, ft_strlen(input));
 		write(end[1], "\n", 1);
 		free(input);
@@ -80,10 +77,11 @@ int	heredoc_handler(t_data *data, t_token *token, t_exec *exec)
 
 	old_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, sig_interrupt_exec);
-	pipe(end);
+	if (pipe(end) == -1)
+        exit_minishell_crash(data, PARSING);
 	pid = fork();
 	if (pid < 0)
-		return (-1);
+		exit_minishell_crash(data, PARSING);
 	if (pid == 0)
 	{
 		signal(SIGINT, SIG_DFL);

@@ -38,12 +38,15 @@ char	*ft_insert(char *old_str, char *new_str, int i, int j)
 	return (part_1);
 }
 
-static int	handle_exit_code(t_data *data, t_token *token, int *i)
+static int	handle_special_variable(t_data *data, t_token *token, int *i)
 {
 	char	*temp;
 	int		len;
 
-	temp = ft_itoa(data->status);
+	if ((token->value)[*i + 1] == '?')
+		temp = ft_itoa(data->status);
+	else
+		temp = ft_itoa(getpid());
 	if (temp == NULL)
 		return (-1);
 	len = ft_strlen(temp);
@@ -88,9 +91,9 @@ static int	handle_expander(t_data *data, t_token *token)
 	i = 0;
 	while ((token->value)[i] != '\0')
 	{
-		if ((token->value)[i] == '$' && (token->value)[i + 1] == '?')
+		if ((token->value)[i] == '$' && ((token->value)[i + 1] == '?' || (token->value)[i + 1] == '$'))
 		{
-			if (handle_exit_code(data, token, &i) == -1)
+			if (handle_special_variable(data, token, &i) == -1)
 				return (-1);
 		}
 		else if (token->value[i] == '$' && (!ft_isalnum(token->value[i + 1])

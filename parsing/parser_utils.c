@@ -11,17 +11,20 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*heredoc_handle_exit_code(t_data *data, char *word, int *i)
+char	*heredoc_handle_special_variable(t_data *data, char *word, int *i)
 {
 	char	*temp;
 
-	temp = ft_itoa(data->status);
+	if (word[*i + 1] == '?')
+		temp = ft_itoa(data->status);
+	else
+		temp = ft_itoa(getpid());
 	if (temp == NULL)
-		return (NULL);
+		exit_minishell_crash(data, PARSING);
 	temp = ft_insert(word, temp, *i, *i + 2);
-	if (temp == NULL)
-		return (NULL);
 	free(word);
+	if (temp == NULL)
+		exit_minishell_crash(data, PARSING);
 	return (temp);
 }
 
@@ -38,14 +41,14 @@ char	*heredoc_handle_env_variable(t_data *data, char *word, int *i)
 		j++;
 	var = ft_substr(word, *i + 1, j - (*i + 1));
 	if (var == NULL)
-		return (NULL);
+		exit_minishell_crash(data, PARSING);
 	value = get_env_variable(data->env, var);
 	free(var);
 	new_word = ft_insert(word, value, *i, j);
 	(*i) = *i + ft_strlen(value);
 	free(word);
 	if (new_word == NULL)
-		return (NULL);
+		exit_minishell_crash(data, PARSING);
 	return (new_word);
 }
 

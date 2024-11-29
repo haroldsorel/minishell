@@ -24,7 +24,7 @@ void	*free_array_of_pointers(char **array)
 	int	i;
 
 	i = 0;
-	if (array == NULL)
+	if (array == NULL || *array == NULL)
 		return (NULL);
 	while (array[i] != NULL)
 	{
@@ -57,6 +57,8 @@ void	*free_commands(t_data *data)
 	int	i;
 
 	i = 0;
+	if (data->exec == NULL)
+		return (NULL);
 	while (i < data->exec_size)
 	{
 		if (data->exec[i].path != NULL)
@@ -65,12 +67,12 @@ void	*free_commands(t_data *data)
 		i++;
 	}
 	free(data->exec);
+	//data->exec = NULL;
 	return (NULL);
 }
 
 void	exit_minishell_crash(t_data *data, t_steps step)
 {
-	ft_putstr_fd("System Error\n", 2);
 	free_array_of_pointers(data->env);
 	data->status = 1;
 	if (step == TOKENIZATION)
@@ -86,7 +88,7 @@ void	exit_minishell_crash(t_data *data, t_steps step)
 		free_tokens(&(data->tokens));
 		free_commands(data);
 	}
-	exit_minishell(data);
+	exit(data->status);
 }
 
 void	free_all(t_data *data)
@@ -103,6 +105,5 @@ void	exit_minishell(t_data *data)
 	free_array_of_pointers(data->env);
 	rl_clear_history();
 	printf("\n\nSTATUS : %d\n\n", data->status);
-	system("leaks minishell");
 	exit(data->status);
 }
