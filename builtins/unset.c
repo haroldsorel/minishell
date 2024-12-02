@@ -79,10 +79,7 @@ int	ft_unset(t_data *data, char **args)
 	i = 1;
 	ret = 0;
 	if (args[1] == NULL)
-	{
-		ret = 1;
-		ft_putstr_fd("unset: not enough arguments\n", 2);
-	}
+		return (0);
 	while (args[i] != NULL)
 	{
 		valid = is_valid_var(args[i]);

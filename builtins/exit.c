@@ -58,7 +58,7 @@ int	valid_argument(char *str)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 		i++;
-	if (ft_isalnum(str[i]) == 0 && str[i] != ' ')
+	if (ft_isdigit(str[i]) == 0 && str[i] != ' ')
 		return (0);
 	while (str[i] != '\0')
 	{
@@ -87,8 +87,8 @@ int	ft_exit(t_data *data, char **args)
 	}
 	if (valid_argument(args[1]) == 0)
 	{
-		data->status = 0;
-		ft_putstr_fd("exit: not a valid argument: ", 2);
+		data->status = 255;
+		ft_putstr_fd("exit: numeric argument required: ", 2);
 		ft_putendl_fd(args[1], 2);
 		exit_minishell(data);
 		return (1);

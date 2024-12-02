@@ -30,41 +30,20 @@ static int	print_export(char **env)
 	i = 0;
 	while (sorted_env[i] != NULL)
 	{
-		ft_putstr_fd("declare -x ", 1);
-		ft_putendl_fd(sorted_env[i], 1);
+		print_line(sorted_env[i]);
 		i++;
 	}
-	free(sorted_env);
-	return (0);
+	return (free(sorted_env), 0);
 }
 
-static int	is_valid_var(char *v)
+int	export_increment(t_data *data, char *str)
 {
-	int	i;
 
-	i = 0;
-	while (v[i] != '\0')
-	{
-		if (ft_isdigit(v[0]) == 1 || (ft_isalnum(v[i]) == 0 && v[i] != '_'))
-		{
-			ft_putstr_fd("export: not an identifier: ", 2);
-			ft_putendl_fd(v, 2);
-			return (0);
-		}
-		i++;
-	}
-	return (1);
 }
 
-int	no_value_handler(t_data *data, char *var)
+int	export_add_or_replace(t_data *data, char *str)
 {
-	if (is_valid_var(var) == 0)
-		return (1);
-	if (is_in_env(data->env, var) != -1)
-		return (0);
-	if (env_add(data, var) == -1)
-		return (-1);
-	return (0);
+
 }
 
 int	export_handler(t_data *data, char *str)
@@ -73,6 +52,12 @@ int	export_handler(t_data *data, char *str)
 	char	*value;
 	int		valid;
 
+	if (str[0] == '=')
+	{
+		ft_putstr_fd("export: not an valid identifier: ", 2);
+		ft_putendl_fd(str, 2);
+		return (1);
+	}
 	value = ft_strchr(str, '=');
 	if (value == NULL)
 		return (no_value_handler(data, str));
@@ -81,15 +66,11 @@ int	export_handler(t_data *data, char *str)
 		return (-1);
 	valid = is_valid_var(key);
 	if (valid == 1 && env_add_or_replace(data, key, str) == -1)
-	{
-		free(key);
-		return (-1);
-	}
-	free(key);
+		return (free(key), -1);
 	if (valid == 1)
-		return (0);
+		return (free(key), 0);
 	else
-		return (1);
+		return (free(key), 1);
 }
 
 int	ft_export(t_data *data, char **args)

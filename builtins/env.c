@@ -11,6 +11,29 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void	print_line(char *line)
+{
+	char	*key;
+	char	*value;
+
+	value = ft_strchr(line, '=');
+	key = ft_substr(line, 0, value - line);
+	if (value == NULL)
+	{
+		ft_putstr_fd("declare -x ", 1);
+		ft_putendl_fd(line, 1);
+	}
+	else
+	{
+		value++;
+		ft_putstr_fd("declare -x ", 1);
+		ft_putstr_fd(key, 1);
+		write(1, "=\"", 2);
+		ft_putstr_fd(value, 1);
+		write(1, "\"\n", 2);
+	}
+}
+
 void	sort_env(char **env)
 {
 	int		i;
