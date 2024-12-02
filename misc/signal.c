@@ -45,6 +45,7 @@ void	sig_interrupt_exec(int signal)
 void	sig_interrupt(int signal)
 {
 	(void)signal;
+	g_signal = signal;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

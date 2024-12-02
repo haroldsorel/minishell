@@ -19,7 +19,7 @@ static void	print_error(t_data *data, char *cmd)
 		ft_putendl_fd(": is a directory\n", 2);
 		data->status = 126;
 	}
-	if (cmd[0] == '/')
+	else if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
 	{
 		ft_putstr_fd("no such file or directory: ", 2);
 		ft_putendl_fd(cmd, 2);
@@ -37,9 +37,9 @@ int	handle_child(t_data *data, t_exec *exec, int *link)
 {
 	close(link[1]);
 	close(link[0]);
+	enable_signal_print();
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
-	enable_signal_print();
 	if (exec->in_file == -1 || exec->out_file == -1)
 		exit (1);
 	if (exec->builtin != 0)

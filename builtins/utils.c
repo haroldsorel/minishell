@@ -80,6 +80,8 @@ int	is_in_env(char **env, char *var)
 			j++;
 		if (env[i][j] == '=' && var[j] == '\0')
 			return (i);
+		if (env[i][j] == var[j])
+			return (i);
 		i++;
 	}
 	return (-1);

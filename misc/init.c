@@ -40,28 +40,31 @@ static int	increment_shlvl(t_data *data, char **env)
 	return (0);
 }
 
-static void	*init_env(t_data *data, char **env)
+static int	init_env(t_data *data, char **env)
 {
 	int	i;
 
 	data->env = malloc(sizeof(char *) * (env_len(env) + 1));
 	if (data->env == NULL)
-		return (NULL);
+		return (-1);
 	i = 0;
 	while (env[i] != NULL)
 	{
 		data->env[i] = ft_strdup(env[i]);
 		if (data->env[i] == NULL)
-		{
-			free_array_of_pointers(data->env);
-			return (NULL);
-		}
+			return (free_array_of_pointers(data->env), -1);
 		i++;
 	}
 	data->env[i] = NULL;
-	if (increment_shlvl(data, data->env) == -1)
-		return (NULL);
-	return (data->env);
+	if (is_in_env(env, "MINISHELL") == -1)
+	{
+		if (env_add_or_replace(data, "MINISHELL", "MINISHELL=1") == -1)
+			return (-1);
+		if (env_add_or_replace(data, "SHLVL", "SHLVL=1"))
+			return (-1);
+		return (0);
+	}
+	return(increment_shlvl(data, env));
 }
 
 static int	init_signals(void)
@@ -86,9 +89,9 @@ static void	init_data(t_data *data)
 
 int	init_all(t_data *data, char **env)
 {
-	init_data(data);
 	init_signals();
-	if (init_env(data, env) == NULL)
+	init_data(data);
+	if (init_env(data, env) == -1)
 		return (-1);
 	return (0);
 }

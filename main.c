@@ -26,10 +26,12 @@ int	minishell_launcher(t_data *data)
 			return (exit_minishell_crash(data, TOKENIZATION), -1);
 		if (flag == 0 && parser(data) == -1)
 			flag = 1;
-		if (flag == 0 && executer(data) == -1)
+		if (flag == 0 && g_signal != SIGINT && executer(data) == -1)
 			return (exit_minishell_crash(data, EXECUTION), -1);
 		add_history(data->input);
 		free_all(data);
+		//free_array_of_pointers(data->env);
+		//return (0);
 	}
 	return (0);
 }
@@ -40,7 +42,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	if (init_all(&data, env) == -1) //analyse env more closely
+	if (init_all(&data, env) == -1)
 		return (1);
 	if (minishell_launcher(&data) == -1)
 		return (1);

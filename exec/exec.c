@@ -26,7 +26,7 @@ int	executer_handler(t_data *data, int stdout_cpy)
 	return (0);
 }
 
-static void	receive_sig(t_data *data)
+static void	received_sig(t_data *data)
 {
 	if (g_signal == SIGINT)
 	{
@@ -76,7 +76,7 @@ int	executer(t_data *d)
 	signal(SIGQUIT, SIG_IGN);
 	signal(SIGINT, sig_interrupt);
 	disable_signal_print();
-	receive_sig(d);
+	received_sig(d);
 	wait_for_child_processes_to_finish(d);
 	return (0);
 }

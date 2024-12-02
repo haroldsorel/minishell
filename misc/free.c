@@ -64,10 +64,14 @@ void	*free_commands(t_data *data)
 		if (data->exec[i].path != NULL)
 			free(data->exec[i].path);
 		free_array_of_pointers(data->exec[i].args);
+		if (data->exec[i].in_file > 2)
+			close (data->exec[i].in_file);
+		if (data->exec[i].out_file > 2)
+			close (data->exec[i].out_file);
 		i++;
 	}
 	free(data->exec);
-	//data->exec = NULL;
+	data->exec = NULL; //prob a prob
 	return (NULL);
 }
 
@@ -88,6 +92,7 @@ void	exit_minishell_crash(t_data *data, t_steps step)
 		free_tokens(&(data->tokens));
 		free_commands(data);
 	}
+	rl_clear_history();
 	exit(data->status);
 }
 
@@ -96,13 +101,12 @@ void	free_all(t_data *data)
 	free(data->input);
 	free_tokens(&(data->tokens));
 	free_commands(data);
-	//close files
 }
 
 void	exit_minishell(t_data *data)
 {
 	free_all(data);
-	free_array_of_pointers(data->env);
+	free(free_array_of_pointers(data->env));
 	rl_clear_history();
 	printf("\n\nSTATUS : %d\n\n", data->status);
 	exit(data->status);
