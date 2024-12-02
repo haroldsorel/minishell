@@ -13,23 +13,28 @@
 
 static void	print_error(t_data *data, char *cmd)
 {
-	if (cmd[0] == '.' && cmd[1] == '/' && is_directory(cmd) == 1)
+	data->status = 127;
+	if (is_directory(cmd) == 1)
 	{
 		ft_putstr_fd(cmd, 2);
-		ft_putendl_fd(": is a directory\n", 2);
+		ft_putendl_fd(": is a directory", 2);
 		data->status = 126;
 	}
 	else if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
 	{
-		ft_putstr_fd("no such file or directory: ", 2);
+		if (access(cmd, F_OK) == -1)
+			ft_putstr_fd("no such file or directory: ", 2);
+		else if (access(cmd, X_OK) == -1)
+		{
+			ft_putendl_fd("permission denied: ", 2);
+			data->status = 126;
+		}
 		ft_putendl_fd(cmd, 2);
-		data->status = 127;
 	}
 	else
 	{
 		ft_putstr_fd("command not found: ", 2);
 		ft_putendl_fd(cmd, 2);
-		data->status = 127;
 	}
 }
 

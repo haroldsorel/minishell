@@ -108,6 +108,5 @@ void	exit_minishell(t_data *data)
 	free_all(data);
 	free(free_array_of_pointers(data->env));
 	rl_clear_history();
-	printf("\n\nSTATUS : %d\n\n", data->status);
 	exit(data->status);
 }

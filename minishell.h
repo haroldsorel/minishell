@@ -194,5 +194,8 @@ void	rl_clear_history(void);
 void	*free_commands(t_data *data);
 void	free_all(t_data *data);
 int		is_directory(const char *path);
+void	print_line(char *line);
+int		no_value_handler(t_data *data, char *var);
+int		is_valid_var(char *v);
 
 #endif
