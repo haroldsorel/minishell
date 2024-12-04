@@ -14,14 +14,13 @@
 char	*heredoc_handle_special_variable(t_data *data, char *word, int *i)
 {
 	char	*temp;
+	char	*status;
 
-	if (word[*i + 1] == '?')
-		temp = ft_itoa(data->status);
-	else
-		temp = ft_itoa(getpid());
-	if (temp == NULL)
+	status = ft_itoa(data->status);
+	if (status == NULL)
 		exit_minishell_crash(data, PARSING);
-	temp = ft_insert(word, temp, *i, *i + 2);
+	temp = ft_insert(word, status, *i, *i + 2);
+	free(status);
 	free(word);
 	if (temp == NULL)
 		exit_minishell_crash(data, PARSING);
@@ -57,6 +56,8 @@ int	ft_strcmp(char *s1, char *s2)
 	int	i;
 
 	i = 0;
+	if (s1 == NULL || s2 == NULL)
+		return (0);
 	while (s1[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
@@ -64,7 +65,9 @@ int	ft_strcmp(char *s1, char *s2)
 
 void	parse_builtin(t_exec *exec)
 {
-	if (!ft_strcmp(exec->args[0], "echo"))
+	if (exec->args[0] == NULL)
+		exec->builtin = NOT_A_BUILTIN;
+	else if (!ft_strcmp(exec->args[0], "echo"))
 		exec->builtin = FT_ECHO;
 	else if (!ft_strcmp(exec->args[0], "cd"))
 		exec->builtin = FT_CD;

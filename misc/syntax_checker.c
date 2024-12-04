@@ -37,7 +37,7 @@ int	pipe_checker(char *input)
 	{
 		while (input[i] != '\0' && input[i] == ' ')
 			i++;
-		if (ft_strchr("><|", input[i]) != NULL)
+		if (ft_strchr("|", input[i]) != NULL)
 			return (-1);
 		while (input[i] != '\0' && input[i] != '|')
 		{
@@ -57,7 +57,7 @@ int	redir_checker(char *input)
 	int	i;
 
 	i = 0;
-	while (input[i] != '\0' && input[i] != '|')
+	while (input[i] != '\0')
 	{
 		if (quotes_skipper(input, &i) == 0)
 			i++;
@@ -77,15 +77,28 @@ int	redir_checker(char *input)
 	return (0);
 }
 
-int	syntax_checker(char *input)
+int	syntax_checker(t_data *data, char *input)
 {
+	int	i;
+
+	i = 0;
 	if (input == NULL)
 		return (-1);
 	if (quotes_checker(input) == -1)
-		return (syntax_error_handler("Quote Error\n"));
+	{
+		data->status = 2;
+		return (syntax_error_handler("Misplced Quote"));
+	}
 	if (pipe_checker(input) == -1)
-		return (syntax_error_handler("Pipe Error\n"));
-	if (redir_checker(input) == -1)
-		return (syntax_error_handler("Redirection Error\n"));
+	{
+		data->status = 2;
+		return (syntax_error_handler("Misplaced Pipe"));
+	}
+	if ((ft_strchr("<>", input[i]) != NULL && input[i + 1] == '\0')
+		|| redir_checker(input) == -1)
+	{
+		data->status = 2;
+		return (syntax_error_handler("Misplaced Redir"));
+	}
 	return (0);
 }

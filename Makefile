@@ -1,6 +1,6 @@
 NAME = minishell
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -I. -Ilibft -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -I. -Ilibft #-fsanitize=address -g
 READLINE = -lreadline -I/Users/hsorel/.brew/opt/readline/include -L/Users/hsorel/.brew/opt/readline/lib -I/opt/homebrew/opt/readline/include -L/opt/homebrew/opt/readline/lib
 INCLUDES = minishell.h
 
@@ -29,6 +29,7 @@ SRCS =	main.c \
 		builtins/env.c \
 		builtins/exit.c \
 		builtins/export.c \
+		builtins/export_utils.c \
 		builtins/pwd.c \
 		builtins/unset.c \
 		builtins/utils.c \

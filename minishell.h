@@ -162,7 +162,7 @@ void	*free_array_of_pointers(char **array);
 void	exit_minishell(t_data *data);
 void	exit_minishell_crash(t_data *data, t_steps step);
 
-int		syntax_checker(char *input);
+int		syntax_checker(t_data *data, char *input);
 int		syntax_error_handler(char *str);
 int		quotes_skipper(char *input, int *i);
 

@@ -24,6 +24,22 @@ void	skip(char *str, int *i, int *neg)
 	}
 }
 
+int	check_for_min(char *str)
+{
+	char	*trimmed;
+
+	trimmed = ft_strtrim(str, " ");
+	if (trimmed == NULL)
+		return (1);
+	if (trimmed[0] == '-')
+	{
+		if (ft_strcmp(trimmed, "-9223372036854775808") == 0)
+			return (free(trimmed), 0);
+	}
+	free(trimmed);
+	return (-1);
+}
+
 int	str_to_uint8(char *str)
 {
 	int64_t	int64_res;
@@ -36,10 +52,16 @@ int	str_to_uint8(char *str)
 	i = 0;
 	len = 0;
 	skip(str, &i, &neg);
+	if (check_for_min(str) != -1)
+		return (check_for_min(str));
 	while (str[i] != '\0' && ft_isdigit(str[i]) == 1 && len < 19)
 	{
 		if (int64_res > (INT64_MAX - (str[i] - '0')) / 10)
-			break ;
+		{
+			ft_putstr_fd("minishell: exit: numeric argument required: ", 2);
+			ft_putendl_fd(str, 2);
+			return (255);
+		}
 		int64_res = int64_res * 10 + (str[i] - '0');
 		i++;
 		len++;
@@ -82,13 +104,13 @@ int	ft_exit(t_data *data, char **args)
 		exit_minishell(data);
 	if (args[1] != NULL && args[2] != NULL)
 	{
-		ft_putstr_fd("exit: too many arguments\n", 2);
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
 		return (1);
 	}
 	if (valid_argument(args[1]) == 0)
 	{
 		data->status = 255;
-		ft_putstr_fd("exit: numeric argument required: ", 2);
+		ft_putstr_fd("minishell: exit: numeric argument required: ", 2);
 		ft_putendl_fd(args[1], 2);
 		exit_minishell(data);
 		return (1);

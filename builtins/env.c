@@ -18,6 +18,8 @@ void	print_line(char *line)
 
 	value = ft_strchr(line, '=');
 	key = ft_substr(line, 0, value - line);
+	if (key == NULL)
+		return ;
 	if (value == NULL)
 	{
 		ft_putstr_fd("declare -x ", 1);
@@ -32,6 +34,7 @@ void	print_line(char *line)
 		ft_putstr_fd(value, 1);
 		write(1, "\"\n", 2);
 	}
+	free(key);
 }
 
 void	sort_env(char **env)

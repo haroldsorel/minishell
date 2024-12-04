@@ -56,15 +56,9 @@ static int	init_env(t_data *data, char **env)
 		i++;
 	}
 	data->env[i] = NULL;
-	if (is_in_env(env, "MINISHELL") == -1)
-	{
-		if (env_add_or_replace(data, "MINISHELL", "MINISHELL=1") == -1)
-			return (-1);
-		if (env_add_or_replace(data, "SHLVL", "SHLVL=1"))
-			return (-1);
-		return (0);
-	}
-	return(increment_shlvl(data, env));
+	if (increment_shlvl(data, env) == -1)
+		return (-1);
+	return(0);
 }
 
 static int	init_signals(void)

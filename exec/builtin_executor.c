@@ -16,7 +16,9 @@ static int	builtin_executer(t_data *data, t_exec *exec, t_builtin type)
 	int	ret;
 
 	ret = 0;
-	if (type == FT_ENV)
+	if (exec->in_file == -1 || exec->out_file == -1)
+		ret = 1;
+	else if (type == FT_ENV)
 		ret = ft_env(data);
 	else if (type == FT_ECHO)
 		ret = ft_echo(exec->args);

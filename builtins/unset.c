@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-static int	is_valid_var(char *v)
+static int	is_valid_var_unset(char *v)
 {
 	int	i;
 
@@ -22,7 +22,7 @@ static int	is_valid_var(char *v)
 		{
 			ft_putstr_fd("unset: ", 2);
 			ft_putstr_fd(v, 2);
-			ft_putstr_fd(": invalid parameter name\n", 2);
+			ft_putstr_fd(": not a valid identifier\n", 2);
 			return (0);
 		}
 		i++;
@@ -82,7 +82,7 @@ int	ft_unset(t_data *data, char **args)
 		return (0);
 	while (args[i] != NULL)
 	{
-		valid = is_valid_var(args[i]);
+		valid = is_valid_var_unset(args[i]);
 		if (valid == 0)
 			ret = 1;
 		index = is_in_env(data->env, args[i]);

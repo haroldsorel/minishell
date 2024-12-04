@@ -15,7 +15,7 @@ static void	print_error(char *dir, char **args)
 {
 	ft_putstr_fd("cd: ", 2);
 	if (args[1] != NULL && args[2] != NULL)
-		ft_putstr_fd("cd: string not in pwd: ", 2);
+		ft_putstr_fd("minishell: cd: string not in pwd: ", 2);
 	else
 	{
 		ft_putstr_fd(strerror(errno), 2);
@@ -78,7 +78,7 @@ static char	*get_dir(t_data *data, char **args)
 	{
 		dir = get_env_variable(data->env, "OLDPWD");
 		if (dir == NULL)
-			ft_putstr_fd("cd: OLDPWD not set\n", 2);
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
 		else
 			ft_putendl_fd(get_env_variable(data->env, "OLDPWD"), 1);
 	}
@@ -86,7 +86,7 @@ static char	*get_dir(t_data *data, char **args)
 	{
 		dir = get_env_variable(data->env, "HOME");
 		if (dir == NULL)
-			ft_putstr_fd("cd: HOME not set\n", 2);
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 	}
 	else
 		dir = args[1];
@@ -100,7 +100,7 @@ int	ft_cd(t_data *data, char **args)
 
 	if (args[1] != NULL && args[2] != NULL && args[3] != NULL)
 	{
-		ft_putstr_fd("cd: too many arguments\n", 2);
+		ft_putstr_fd("minishell: cd: too many arguments\n", 2);
 		return (1);
 	}
 	dir = get_dir(data, args);

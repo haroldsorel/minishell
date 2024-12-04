@@ -59,15 +59,12 @@ static char	*find_path(t_data *data, char *cmd)
 	return (free_array_of_pointers(hosts), path);
 }
 
-static int	is_valid_path(t_data *data, char *path)
+static int	is_valid_path(char *path)
 {
 	if (access(path, F_OK | X_OK) != -1)
 	{
 		if (is_directory(path) == 1)
 			return (0);
-		path = ft_strdup(path);
-		if (path == NULL)
-			exit_minishell_crash(data, PARSING);
 		return (1);
 	}
 	return (0);
@@ -81,12 +78,12 @@ int	path_parser(t_data *data, t_exec *exec, char *cmd)
 		return (0);
 	if (cmd[0] == '/')
 	{
-		if (is_valid_path(data, cmd) == 1)
+		if (is_valid_path(cmd) == 1)
 			exec->path = ft_strdup(cmd);
 	}
 	else if (cmd[0] == '.' && cmd[1] == '/')
 	{
-		if (is_valid_path(data, cmd) == 1)
+		if (is_valid_path(cmd) == 1)
 			exec->path = ft_strdup(cmd);
 	}
 	else

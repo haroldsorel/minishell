@@ -20,7 +20,7 @@ int	minishell_launcher(t_data *data)
 		flag = 0;
 		if (prompt_launcher(data) == NULL)
 			return (exit_minishell_crash(data, USER_INPUT), -1);
-		if (data->input[0] == '\0' || syntax_checker(data->input) == -1)
+		if (data->input[0] == '\0' || syntax_checker(data, data->input) == -1)
 			flag = 1;
 		if (flag == 0 && tokenizer(data, data->input) == -1)
 			return (exit_minishell_crash(data, TOKENIZATION), -1);
@@ -31,7 +31,7 @@ int	minishell_launcher(t_data *data)
 		add_history(data->input);
 		free_all(data);
 		//free_array_of_pointers(data->env);
-		//return (0);
+		//system("leaks minishell");
 	}
 	return (0);
 }

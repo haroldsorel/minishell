@@ -38,26 +38,36 @@ static int	print_export(char **env)
 
 int	export_increment(t_data *data, char *str)
 {
+	char	*new;
+	char	*value;
+	char	*key;
 
+	value = ft_strchr(str, '=');
+	key = ft_substr(str, 0, value - str - 1);
+	if (key == NULL)
+		return (-1);
+	if (is_valid_var(key) == 0)
+		return (1);
+	if (is_in_env(data->env, key) == -1)
+		new = ft_strjoin(key, value);
+	else
+		new = ft_strjoin((data->env)[is_in_env(data->env, key)], ++value);
+	if (new == NULL)
+		return (free(key), -1);
+	if (env_add_or_replace(data, key, new) == -1)
+		return (-1);
+	free(key);
+	free(new);
+	return (0);
 }
 
 int	export_add_or_replace(t_data *data, char *str)
 {
-
-}
-
-int	export_handler(t_data *data, char *str)
-{
-	char	*key;
 	char	*value;
+	char	*key;
+	int		ret;
 	int		valid;
 
-	if (str[0] == '=')
-	{
-		ft_putstr_fd("export: not an valid identifier: ", 2);
-		ft_putendl_fd(str, 2);
-		return (1);
-	}
 	value = ft_strchr(str, '=');
 	if (value == NULL)
 		return (no_value_handler(data, str));
@@ -66,11 +76,42 @@ int	export_handler(t_data *data, char *str)
 		return (-1);
 	valid = is_valid_var(key);
 	if (valid == 1 && env_add_or_replace(data, key, str) == -1)
-		return (free(key), -1);
+		return(free(key), -1);
 	if (valid == 1)
-		return (free(key), 0);
+		ret = 0;
 	else
-		return (free(key), 1);
+		ret = 1;
+	free(key);
+	return (ret);
+}
+
+int	export_handler(t_data *data, char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[0] == '=' || (str[0] == '+' && str[1] == '='))
+	{
+		ft_putstr_fd("export: not an valid identifier: ", 2);
+		ft_putendl_fd(str, 2);
+		return (1);
+	}
+	while (str[i] != '\0' && str[i] != '+')
+		i++;
+	if (str[i] == '+')
+	{
+		if (str[i + 1] == '=')
+			return(export_increment(data, str));
+		else
+		{
+			ft_putstr_fd("export: not an valid identifier: ", 2);
+			ft_putendl_fd(str, 2);
+			return (1);
+		}
+	}
+	else
+		return(export_add_or_replace(data, str));
+	return (0);
 }
 
 int	ft_export(t_data *data, char **args)

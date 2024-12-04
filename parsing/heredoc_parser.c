@@ -20,7 +20,7 @@ char	*heredoc_expand(t_data *data, char *input, t_token *token)
 		return (input);
 	while (input[i] != '\0')
 	{
-		if (input[i] == '$' && (input[i + 1] == '?' || input[i + 1] == '$'))
+		if (input[i] == '$' && input[i + 1] == '?')
 			input = heredoc_handle_special_variable(data, input, &i);
 		else if (input[i] == '$'
 			&& (!ft_isalnum(input[i + 1]) || input[i + 1] == '\0'))
