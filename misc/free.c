@@ -71,7 +71,7 @@ void	*free_commands(t_data *data)
 		i++;
 	}
 	free(data->exec);
-	data->exec = NULL; //prob a prob
+	data->exec = NULL;
 	return (NULL);
 }
 
@@ -98,7 +98,8 @@ void	exit_minishell_crash(t_data *data, t_steps step)
 
 void	free_all(t_data *data)
 {
-	free(data->input);
+	if (data->input != NULL)
+		free(data->input);
 	free_tokens(&(data->tokens));
 	free_commands(data);
 }
@@ -108,5 +109,6 @@ void	exit_minishell(t_data *data)
 	free_all(data);
 	free(free_array_of_pointers(data->env));
 	rl_clear_history();
+	g_signal = 0;
 	exit(data->status);
 }

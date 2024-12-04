@@ -39,6 +39,7 @@ int	input_handler(t_data *data, t_token *token, int *end)
 {
 	char	*input;
 
+	close(end[0]);
 	input = readline("heredoc>");
 	if (input == NULL)
 		exit_minishell_crash(data, PARSING);
@@ -66,6 +67,8 @@ int	fill_input(t_data *data, t_exec *exec, int *end, int old_stdin)
 		close(exec->in_file);
 	if (exec->in_file > -1)
 		exec->in_file = end[0];
+	else
+		close(end[0]);
 	return (0);
 }
 
@@ -86,13 +89,15 @@ int	heredoc_handler(t_data *data, t_token *token, t_exec *exec)
 	{
 		signal(SIGINT, SIG_DFL);
 		if (input_handler(data, token, end) == -1)
-			return (-1);
+			exit_minishell_crash(data, PARSING);
+		close(old_stdin);
 		exit(0);
 	}
 	else
 	{
 		waitpid(pid, NULL, 0);
 		fill_input(data, exec, end, old_stdin);
+		close(old_stdin);
 	}
 	return (0);
 }

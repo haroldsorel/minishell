@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	executer_handler(t_data *data, int stdout_cpy)
+int	executer_handler(t_data *data, int stdout_cpy, int stdin_cpy)
 {
 	int	i;
 	int	number_of_child_processes;
@@ -20,7 +20,7 @@ int	executer_handler(t_data *data, int stdout_cpy)
 	number_of_child_processes = data->exec_size;
 	while (i < number_of_child_processes)
 	{
-		pipe_executor(data, &(data->exec[i]), i, stdout_cpy);
+		pipe_executor(data, &(data->exec[i]), i, stdout_cpy, stdin_cpy);
 		i++;
 	}
 	return (0);
@@ -66,7 +66,7 @@ int	executer(t_data *d)
 	}
 	stdin_copy = dup(STDIN_FILENO);
 	stdout_copy = dup(STDOUT_FILENO);
-	executer_handler(d, stdout_copy);
+	executer_handler(d, stdout_copy, stdin_copy);
 	dup2(stdin_copy, STDIN_FILENO);
 	dup2(stdout_copy, STDOUT_FILENO);
 	close(stdin_copy);
