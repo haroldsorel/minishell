@@ -13,26 +13,29 @@
 
 static void	print_error(t_data *data, char *cmd)
 {
-	data->status = 127;
-	if (cmd != NULL && is_directory(cmd) == 1)
+	if (cmd != NULL)
 	{
-		ft_putstr_fd("minishell:", 2);
-		ft_putstr_fd(": is a directory:", 2);
-		data->status = 126;
-	}
-	else if (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/'))
-	{
-		if (access(cmd, F_OK) == -1)
-			ft_putstr_fd("minishell: No such file or directory: ", 2);
-		else if (access(cmd, X_OK) == -1)
+		data->status = 127;
+		if ((cmd[0] == '/') || (cmd[0] == '.' && cmd[1] == '/'))
 		{
-			ft_putendl_fd("minishell: Permission denied: ", 2);
-			data->status = 126;
+			if (is_directory(cmd) == 1)
+			{
+				ft_putstr_fd("minishell: ", 2);
+				ft_putstr_fd("is a directory: ", 2);
+				data->status = 126;
+			}
+			if (access(cmd, F_OK) == -1)
+				ft_putstr_fd("minishell: No such file or directory: ", 2);
+			else if (access(cmd, X_OK) == -1)
+			{
+				ft_putendl_fd("minishell: Permission denied: ", 2);
+				data->status = 126;
+			}
 		}
+		else
+			ft_putstr_fd("minishell: Command not found: ", 2);
+		ft_putendl_fd(cmd, 2);
 	}
-	else
-		ft_putstr_fd("minishell: Command not found: ", 2);
-	ft_putendl_fd(cmd, 2);
 }
 
 int	handle_child(t_data *data, t_exec *exec, int *link)
@@ -55,7 +58,7 @@ int	handle_child(t_data *data, t_exec *exec, int *link)
 		//	exit(data->status);
 		print_error(data, exec->args[0]);
 	}
-	else 
+	else
 		execve(exec->path, exec->args, data->env);
 	return (0);
 }

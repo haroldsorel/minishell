@@ -42,19 +42,29 @@ static int	handle_special_variable(t_data *data, t_token *token, int *i)
 {
 	char	*temp;
 	char	*status;
-	int		len;
+	int		j;
 
-	status = ft_itoa(data->status);
+	j = *i + 1;
+	if ((token->value)[0] == '~' && (token->value)[1] == '\0')
+		if (get_env_variable(data->env, "HOME") != NULL)
+			status = ft_strdup(get_env_variable(data->env, "HOME"));
+		else
+			status = ft_strdup("~");
+	else
+	{
+		status = ft_itoa(data->status);
+		j++;
+	}
 	if (status == NULL)
 		return (-1);
-	len = ft_strlen(temp);
-	temp = ft_insert(token->value, status, *i, *i + 2);
+	temp = ft_insert(token->value, status, *i, j);
+	*i = *i + ft_strlen(status);
 	free(status);
 	free(token->value);
 	if (temp == NULL)
 		return (-1);
 	token->value = temp;
-	return (len);
+	return (0);
 }
 
 static int	handle_env_variable(t_data *data, t_token *token
@@ -90,7 +100,9 @@ static int	handle_expander(t_data *data, t_token *token)
 	i = 0;
 	while ((token->value)[i] != '\0')
 	{
-		if ((token->value)[i] == '$' && (token->value)[i + 1] == '?')
+		if (((token->value)[0] == '~' && (token->value)[1] == '\0'
+			&& token->type == WORD)
+			|| ((token->value)[i] == '$' && (token->value)[i + 1] == '?'))
 		{
 			if (handle_special_variable(data, token, &i) == -1)
 				return (-1);
@@ -121,6 +133,7 @@ int	expander(t_data *data)
 		{
 			if (handle_expander(data, t) == -1)
 				return (-1);
+			
 		}
 		t = t->next;
 	}

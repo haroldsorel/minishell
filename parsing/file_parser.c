@@ -15,15 +15,16 @@ static void	file_error(char *filename)
 {
 	if (is_directory(filename) == 1)
 	{
+		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(filename, 2);
-		ft_putendl_fd(": is a directory", 2);
+		ft_putstr_fd(": is a directory\n", 2);
 	}
 	else
 	{
 		if (access(filename, F_OK) == -1)
-			ft_putstr_fd("no such file or directory: ", 2);
+			ft_putstr_fd("minishell: no such file or directory: ", 2);
 		else if (access(filename, X_OK) == -1)
-			ft_putstr_fd("permission denied: ", 2);
+			ft_putstr_fd("minishell: permission denied: ", 2);
 		ft_putendl_fd(filename, 2);
 	}
 }
@@ -33,6 +34,8 @@ int	file_handler(t_data *data, t_token *token, t_exec *exec)
 	int	fd;
 
 	fd = -1;
+	if (exec->in_file == -1 || exec->out_file == -1)
+		return (0);
 	if (token->type == INFILE)
 		fd = open(token->value, O_RDONLY);
 	else if (token->type == OUTFILE)
@@ -42,7 +45,7 @@ int	file_handler(t_data *data, t_token *token, t_exec *exec)
 	if (fd == -1)
 	{
 		file_error(token->value);
-		data->status = 1;
+		data->status = 1; //put this at the execution to shorten function length
 	}
 	if (token->type == INFILE && exec->in_file > 2)
 		close(exec->in_file);

@@ -49,6 +49,7 @@ int	builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 		close(stdin_cpy);
 		close(stdout_cpy);
 		ft_exit(data, exec->args);
+		return (0);
 	}
 	if (exec->in_file > -1)
 		dup2(exec->in_file, STDIN_FILENO);

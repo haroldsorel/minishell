@@ -105,6 +105,7 @@ int	ft_exit(t_data *data, char **args)
 	if (args[1] != NULL && args[2] != NULL)
 	{
 		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		data->status = 1;
 		return (1);
 	}
 	if (valid_argument(args[1]) == 0)

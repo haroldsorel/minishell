@@ -76,6 +76,8 @@ int	path_parser(t_data *data, t_exec *exec, char *cmd)
 		return (0);
 	if (exec->builtin != 0)
 		return (0);
+	if (cmd[0] == '\0')
+		return (0);
 	if (cmd[0] == '/')
 	{
 		if (is_valid_path(cmd) == 1)
