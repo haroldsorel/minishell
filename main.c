@@ -30,8 +30,6 @@ int	minishell_launcher(t_data *data)
 			return (exit_minishell_crash(data, EXECUTION), -1);
 		add_history(data->input);
 		free_all(data);
-		//free_array_of_pointers(data->env);
-		//system("leaks minishell");
 	}
 	return (0);
 }

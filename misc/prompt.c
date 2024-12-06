@@ -51,7 +51,10 @@ char	*prompt_launcher(t_data *data)
 	user_input = readline(prompt);
 	free(prompt);
 	if (user_input == NULL)
+	{
+		write (1, "exit\n", 5);
 		return (NULL);
+	}
 	data->input = ft_strtrim(user_input, " \t\n\v\f\r");
 	free(user_input);
 	if (data->input == NULL)

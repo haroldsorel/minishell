@@ -28,12 +28,12 @@ int	executer_handler(t_data *data, int stdout_cpy, int stdin_cpy)
 
 static void	received_sig(t_data *data)
 {
-	if (g_signal == SIGINT)
+	if (g_signal == 130)
 	{
 		data->status = 130;
 		g_signal = 0;
 	}
-	if (g_signal == SIGQUIT)
+	if (g_signal == 131)
 	{
 		data->status = 131;
 		g_signal = 0;

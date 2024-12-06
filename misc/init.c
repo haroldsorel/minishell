@@ -58,7 +58,7 @@ static int	init_env(t_data *data, char **env)
 	data->env[i] = NULL;
 	if (increment_shlvl(data, env) == -1)
 		return (-1);
-	return(0);
+	return (0);
 }
 
 static int	init_signals(void)

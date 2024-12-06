@@ -81,7 +81,7 @@ int	heredoc_handler(t_data *data, t_token *token, t_exec *exec)
 	old_stdin = dup(STDIN_FILENO);
 	signal(SIGINT, sig_interrupt_exec);
 	if (pipe(end) == -1)
-        exit_minishell_crash(data, PARSING);
+		exit_minishell_crash(data, PARSING);
 	pid = fork();
 	if (pid < 0)
 		exit_minishell_crash(data, PARSING);

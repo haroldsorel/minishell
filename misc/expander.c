@@ -46,21 +46,21 @@ static int	handle_special_variable(t_data *data, t_token *token, int *i)
 
 	j = *i + 1;
 	if ((token->value)[0] == '~' && (token->value)[1] == '\0')
+	{
 		if (get_env_variable(data->env, "HOME") != NULL)
 			status = ft_strdup(get_env_variable(data->env, "HOME"));
 		else
 			status = ft_strdup("~");
+	}
 	else
 	{
 		status = ft_itoa(data->status);
 		j++;
 	}
-	if (status == NULL)
-		return (-1);
 	temp = ft_insert(token->value, status, *i, j);
+	free(token->value);
 	*i = *i + ft_strlen(status);
 	free(status);
-	free(token->value);
 	if (temp == NULL)
 		return (-1);
 	token->value = temp;

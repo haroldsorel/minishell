@@ -14,8 +14,9 @@
 
 void	sig_quit(int signal)
 {
+	(void)signal;
 	write(2, "Quit: 3\n", 8);
-	g_signal = signal;
+	g_signal = 131;
 }
 
 void	enable_signal_print(void)
@@ -38,7 +39,8 @@ void	disable_signal_print(void)
 
 void	sig_interrupt_exec(int signal)
 {
-	g_signal = signal;
+	(void)signal;
+	g_signal = 130;
 	write(1, "\n", 1);
 }
 

@@ -76,7 +76,7 @@ int	export_add_or_replace(t_data *data, char *str)
 		return (-1);
 	valid = is_valid_var(key);
 	if (valid == 1 && env_add_or_replace(data, key, str) == -1)
-		return(free(key), -1);
+		return (free(key), -1);
 	if (valid == 1)
 		ret = 0;
 	else
@@ -101,7 +101,7 @@ int	export_handler(t_data *data, char *str)
 	if (str[i] == '+')
 	{
 		if (str[i + 1] == '=')
-			return(export_increment(data, str));
+			return (export_increment(data, str));
 		else
 		{
 			ft_putstr_fd("export: not an valid identifier: ", 2);
@@ -110,7 +110,7 @@ int	export_handler(t_data *data, char *str)
 		}
 	}
 	else
-		return(export_add_or_replace(data, str));
+		return (export_add_or_replace(data, str));
 	return (0);
 }
 

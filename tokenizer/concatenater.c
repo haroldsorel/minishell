@@ -25,7 +25,7 @@ void	check_for_empty_token(t_token *token, t_token **head)
 		else
 		{
 			*head = token->next;
-			(*head)->prev = NULL; 
+			(*head)->prev = NULL;
 		}
 	}
 	else

@@ -19,7 +19,8 @@ int	handle_dquotes(t_token **tokens, char *input, int *i)
 	start = *i;
 	while (input[*i] != '\0' && input[*i] != '"')
 		(*i)++;
-	if (add_token_to_list(tokens, DQUOTE, ft_substr(input, start, *i - start)) == -1)
+	if (add_token_to_list(tokens, DQUOTE,
+			ft_substr(input, start, *i - start)) == -1)
 		return (-1);
 	(*i)++;
 	return (0);
@@ -33,7 +34,8 @@ int	handle_quotes(t_token **tokens, char *input, int *i)
 	start = *i;
 	while (input[*i] != '\0' && input[*i] != '\'')
 		(*i)++;
-	if (add_token_to_list(tokens, QUOTE, ft_substr(input, start, *i - start)) == -1)
+	if (add_token_to_list(tokens, QUOTE,
+			ft_substr(input, start, *i - start)) == -1)
 		return (-1);
 	(*i)++;
 	return (0);
@@ -46,7 +48,8 @@ int	handle_word(t_token **tokens, char *input, int *i)
 	start = *i;
 	while (input[*i] != '\0' && strchr("><| '\"", input[*i]) == NULL)
 		(*i)++;
-	if (add_token_to_list(tokens, WORD, ft_substr(input, start, *i - start)) == -1)
+	if (add_token_to_list(tokens, WORD,
+			ft_substr(input, start, *i - start)) == -1)
 		return (-1);
 	return (0);
 }

@@ -167,7 +167,7 @@ int		syntax_error_handler(char *str);
 int		quotes_skipper(char *input, int *i);
 
 int		parser(t_data *data);
-int		file_parser(t_data *data, t_token *token, t_exec *exec);
+int		file_parser(t_token *token, t_exec *exec);
 int		count_args(t_token *tokens);
 int		args_parser(t_data *data, t_token *token, t_exec *exec);
 int		heredoc_parser(t_data *data, t_token *token, t_exec *exec);
@@ -187,7 +187,7 @@ int		ft_strcmp_env(char *s1, char *s2);
 
 int		executer(t_data *data);
 int		builtin_handler(t_data *data, t_exec *exec, t_builtin type);
-int		pipe_executor(t_data *data, t_exec *exec, int index, int stdout_copy, int stdin_copy);
+int		pipe_executor(t_data *data, t_exec *exec, int i, int in, int out);
 int		ft_strcmp(char *s1, char *s2);
 void	rl_replace_line(const char *str, int undo);
 void	rl_clear_history(void);

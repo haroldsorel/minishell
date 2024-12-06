@@ -24,7 +24,7 @@ int	fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
 	t_token	*current;
 
 	current = *tokens;
-	if (file_parser(data, *tokens, exec) == -1)
+	if (file_parser(*tokens, exec) == -1)
 		return (-1);
 	if (heredoc_parser(data, current, exec) == -1)
 		return (-1);
@@ -61,7 +61,7 @@ int	init_exec(t_data *data)
 
 	i = 0;
 	data->exec_size = count_pipes(&(data->tokens)) + 1;
-	data->exec = malloc((data->exec_size) * sizeof(t_exec));
+	data->exec = malloc((data->exec_size + 1) * sizeof(t_exec));
 	if (data->exec == NULL)
 		exit_minishell_crash(data, PARSING);
 	while (i < data->exec_size)

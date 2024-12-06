@@ -24,7 +24,7 @@ void	*free_array_of_pointers(char **array)
 	int	i;
 
 	i = 0;
-	if (array == NULL || *array == NULL)
+	if (array == NULL)
 		return (NULL);
 	while (array[i] != NULL)
 	{
@@ -80,11 +80,17 @@ void	exit_minishell_crash(t_data *data, t_steps step)
 	free_array_of_pointers(data->env);
 	data->status = 1;
 	if (step == TOKENIZATION)
-		free(data->input);
+	{
+		if (data->input != NULL)
+			free(data->input);
+		free_tokens(&(data->tokens));
+	}
 	if (step == PARSING)
 	{
 		free(data->input);
 		free_tokens(&(data->tokens));
+		if (data->exec != NULL)
+			free(data->exec);
 	}
 	if (step == EXECUTION)
 	{
@@ -107,7 +113,7 @@ void	free_all(t_data *data)
 void	exit_minishell(t_data *data)
 {
 	free_all(data);
-	free(free_array_of_pointers(data->env));
+	free_array_of_pointers(data->env);
 	rl_clear_history();
 	g_signal = 0;
 	exit(data->status);

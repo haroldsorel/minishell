@@ -36,6 +36,12 @@ static int	builtin_executer(t_data *data, t_exec *exec, t_builtin type)
 	return (ret);
 }
 
+static void	close_2_files(int fd1, int fd2)
+{
+	close(fd1);
+	close(fd2);
+}
+
 int	builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 {
 	int	stdin_cpy;
@@ -46,8 +52,7 @@ int	builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 	if (type == FT_EXIT)
 	{
 		ft_putstr_fd("exit\n", 1);
-		close(stdin_cpy);
-		close(stdout_cpy);
+		close_2_files(stdin_cpy, stdout_cpy);
 		ft_exit(data, exec->args);
 		return (0);
 	}
@@ -57,13 +62,11 @@ int	builtin_handler(t_data *data, t_exec *exec, t_builtin type)
 		dup2(exec->out_file, STDOUT_FILENO);
 	if (builtin_executer(data, exec, type) == -1)
 	{
-		close(stdin_cpy);
-		close(stdout_cpy);
-		return (-1);
+		close_2_files(stdin_cpy, stdout_cpy);
+		exit_minishell_crash(data, EXECUTION);
 	}
 	dup2(stdin_cpy, STDIN_FILENO);
 	dup2(stdout_cpy, STDOUT_FILENO);
-	close(stdin_cpy);
-	close(stdout_cpy);
+	close_2_files(stdin_cpy, stdout_cpy);
 	return (0);
 }

@@ -51,13 +51,9 @@ int	handle_child(t_data *data, t_exec *exec, int *link)
 		return (0);
 	}
 	else if (exec->builtin != 0)
-		builtin_handler(data, exec, exec->builtin); //watch out if builtin handler fails
+		builtin_handler(data, exec, exec->builtin);
 	else if (exec->builtin == 0 && exec->path == NULL)
-	{
-		//if (exec->args[0] == NULL && exec->out_file >= 2)
-		//	exit(data->status);
 		print_error(data, exec->args[0]);
-	}
 	else
 		execve(exec->path, exec->args, data->env);
 	return (0);

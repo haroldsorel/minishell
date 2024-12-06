@@ -80,13 +80,3 @@ char	*ft_strtrim(const char *s1, const char *set)
 	str[j] = '\0';
 	return (str);
 }
-/*
-#include <stdio.h>
-int main()
-{
-	const char str[] = "  .... . . . .   ....  .qw. . ... erty      ... . . .    ";
-	const char *set = NULL;
-	printf("%s", ft_strtrim(str, set));
-	return (0);
-}
-*/
