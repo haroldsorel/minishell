@@ -199,4 +199,5 @@ int		no_value_handler(t_data *data, char *var);
 int		is_valid_var(char *v);
 
 char	*get_next_line(int fd);
+void	check_for_empty_token(t_token *token, t_token **head);
 #endif

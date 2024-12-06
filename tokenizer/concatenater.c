@@ -11,6 +11,32 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
+void	check_for_empty_token(t_token *token, t_token **head)
+{
+	t_token	*temp;
+
+	temp = token;
+	if ((token->value)[0] != '\0')
+		return ;
+	if (token->prev == NULL)
+	{
+		if (token->next == NULL)
+			*head = NULL;
+		else
+		{
+			*head = token->next;
+			(*head)->prev = NULL; 
+		}
+	}
+	else
+	{
+		token->prev->next = token->next;
+		if (token->next != NULL)
+			token->next->prev = token->prev;
+	}
+	free_one_token(temp);
+}
+
 int	concatenate_word(t_token *current)
 {
 	char	*old_value;
@@ -39,7 +65,10 @@ void	delete_spaces(t_token **token)
 		if (current->type == FT_SPACE)
 		{
 			temp = current->next;
-			current->prev->next = current->next;
+			if (current->prev == NULL)
+				*token = current->next;
+			else
+				current->prev->next = current->next;
 			if (current->next != NULL)
 				current->next->prev = current->prev;
 			free_one_token(current);

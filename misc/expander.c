@@ -118,24 +118,31 @@ static int	handle_expander(t_data *data, t_token *token)
 		else
 			i++;
 	}
+	check_for_empty_token(token, &(data->tokens));
 	return (0);
 }
 
 int	expander(t_data *data)
 {
 	t_token	*t;
+	t_token	*next;
 
 	t = data->tokens;
 	while (t != NULL)
 	{
+		next = t->next;
 		if (t->type == WORD || t->type == DQUOTE || t->type == INFILE
 			|| t->type == OUTFILE || t->type == APPEND)
 		{
+			if ((t->value)[0] == '\0')
+			{
+				t = next;
+				continue ;
+			}
 			if (handle_expander(data, t) == -1)
 				return (-1);
-			
 		}
-		t = t->next;
+		t = next;
 	}
 	return (0);
 }

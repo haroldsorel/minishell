@@ -58,7 +58,7 @@ int	tokenizer(t_data *data, char *input)
 			return (-1);
 	}
 	data->tokens = tokens;
-	if (expander(data) == -1 || concatenater(&tokens) == -1)
+	if (expander(data) == -1 || concatenater(&(data->tokens)) == -1)
 		return (-1);
 	return (0);
 }
