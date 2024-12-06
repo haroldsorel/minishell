@@ -29,6 +29,24 @@ static int	handle_special_chars(t_token **tokens, char *input, int *i)
 	return (flag);
 }
 
+static int	tokenizer_helper(t_token **tokens, char c, char *input, int *i)
+{
+	int	flag;
+
+	flag = 0;
+	if (ft_strchr("><|", c) != NULL)
+		flag = handle_special_chars(tokens, input, i);
+	else if (c == '\'')
+		flag = handle_quotes(tokens, input, i);
+	else if (c == '"')
+		flag = handle_dquotes(tokens, input, i);
+	else
+		flag = handle_word(tokens, input, i);
+	if (flag == -1)
+		return (-1);
+	return (flag);
+}
+
 int	tokenizer(t_data *data, char *input)
 {
 	t_token	*tokens;
@@ -46,19 +64,10 @@ int	tokenizer(t_data *data, char *input)
 				i++;
 			flag = add_token_to_list(&tokens, FT_SPACE, ft_strdup(" "));
 		}
-		if (ft_strchr("><|", input[i]) != NULL)
-			flag = handle_special_chars(&tokens, input, &i);
-		else if (input[i] == '\'')
-			flag = handle_quotes(&tokens, input, &i);
-		else if (input[i] == '"')
-			flag = handle_dquotes(&tokens, input, &i);
-		else
-			flag = handle_word(&tokens, input, &i);
-		if (flag == -1)
-			return (-1);
+		flag = tokenizer_helper(&tokens, input[i], input, &i);
 	}
 	data->tokens = tokens;
 	if (expander(data) == -1 || concatenater(&(data->tokens)) == -1)
 		return (-1);
-	return (0);
+	return (flag);
 }
