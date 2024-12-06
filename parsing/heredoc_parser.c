@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-char	*heredoc_expand(t_data *data, char *input, t_token *token)
+static char	*heredoc_expand(t_data *data, char *input, t_token *token)
 {
 	int	i;
 
@@ -35,7 +35,7 @@ char	*heredoc_expand(t_data *data, char *input, t_token *token)
 	return (input);
 }
 
-int	input_handler(t_data *data, t_token *token, int *end)
+static int	input_handler(t_data *data, t_token *token, int *end)
 {
 	char	*input;
 
@@ -56,7 +56,7 @@ int	input_handler(t_data *data, t_token *token, int *end)
 	return (0);
 }
 
-int	fill_input(t_data *data, t_exec *exec, int *end, int old_stdin)
+static int	fill_input(t_data *data, t_exec *exec, int *end, int old_stdin)
 {
 	if (g_signal == SIGINT)
 		data->status = 1;
@@ -72,7 +72,7 @@ int	fill_input(t_data *data, t_exec *exec, int *end, int old_stdin)
 	return (0);
 }
 
-int	heredoc_handler(t_data *data, t_token *token, t_exec *exec)
+static void	heredoc_handler(t_data *data, t_token *token, t_exec *exec)
 {
 	int	pid;
 	int	end[2];
@@ -99,7 +99,6 @@ int	heredoc_handler(t_data *data, t_token *token, t_exec *exec)
 		fill_input(data, exec, end, old_stdin);
 		close(old_stdin);
 	}
-	return (0);
 }
 
 int	heredoc_parser(t_data *data, t_token *current, t_exec *exec)
@@ -107,10 +106,7 @@ int	heredoc_parser(t_data *data, t_token *current, t_exec *exec)
 	while (current != NULL && current->type != PIPE)
 	{
 		if (current->type == HEREDOC || current->type == S_HEREDOC)
-		{
-			if (heredoc_handler(data, current, exec) == -1)
-				return (-1);
-		}
+			heredoc_handler(data, current, exec);
 		current = current->next;
 	}
 	return (0);

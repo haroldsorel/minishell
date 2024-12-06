@@ -187,7 +187,7 @@ int		ft_strcmp_env(char *s1, char *s2);
 
 int		executer(t_data *data);
 int		builtin_handler(t_data *data, t_exec *exec, t_builtin type);
-int		pipe_executor(t_data *data, t_exec *exec, int i, int in, int out);
+int		pipe_executor(t_data *data, int i, int in, int out);
 int		ft_strcmp(char *s1, char *s2);
 void	rl_replace_line(const char *str, int undo);
 void	rl_clear_history(void);

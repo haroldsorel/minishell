@@ -38,7 +38,7 @@ static void	print_error(t_data *data, char *cmd)
 	}
 }
 
-int	handle_child(t_data *data, t_exec *exec, int *link)
+static int	handle_child(t_data *data, t_exec *exec, int *link)
 {
 	close(link[1]);
 	close(link[0]);
@@ -59,7 +59,7 @@ int	handle_child(t_data *data, t_exec *exec, int *link)
 	return (0);
 }
 
-int	handle_parent(t_data *data, int *link, int index)
+static int	handle_parent(t_data *data, int *link, int index)
 {
 	signal(SIGQUIT, sig_quit);
 	signal(SIGINT, sig_interrupt_exec);
@@ -70,31 +70,31 @@ int	handle_parent(t_data *data, int *link, int index)
 	return (0);
 }
 
-int	pipe_executor(t_data *data, t_exec *exec, int index, int stdout_copy, int stdin_copy)
+int	pipe_executor(t_data *data, int i, int stdout_copy, int stdin_copy)
 {
 	int	link[2];
 
 	if (pipe(link) == -1)
 		exit_minishell_crash(data, EXECUTION);
-	if (index < data->exec_size - 1)
+	if (i < data->exec_size - 1)
 		dup2(link[1], STDOUT_FILENO);
 	else
 		dup2(stdout_copy, STDOUT_FILENO);
-	if (exec->in_file > 2)
-		dup2(exec->in_file, STDIN_FILENO);
-	if (exec->out_file > 2)
-		dup2(exec->out_file, STDOUT_FILENO);
+	if ((data->exec[i]).in_file > 2)
+		dup2((data->exec[i]).in_file, STDIN_FILENO);
+	if ((data->exec[i]).out_file > 2)
+		dup2((data->exec[i]).out_file, STDOUT_FILENO);
 	data->pid = fork();
 	if (data->pid < 0)
 		exit_minishell_crash(data, EXECUTION);
 	if (data->pid == 0)
 	{
-		handle_child(data, exec, link);
+		handle_child(data, &(data->exec[i]), link);
 		close(stdout_copy);
 		close(stdin_copy);
 		exit(data->status);
 	}
 	else
-		handle_parent(data, link, index);
+		handle_parent(data, link, i);
 	return (0);
 }

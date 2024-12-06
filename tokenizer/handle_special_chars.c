@@ -65,32 +65,31 @@ int	handle_infile(t_token **tokens, char *input, int *i)
 	return (0);
 }
 
-int	handle_heredoc(t_token **tokens, char *input, int *i)
+int	handle_heredoc(t_token **t, char *input, int *i)
 {
-	int	start;
+	int	s;
 
 	*i = *i + 2;
 	while (input[*i] == ' ')
 		(*i)++;
-	start = *i;
+	s = *i;
 	if (input[*i] == '\'')
 	{
-		if (add_token_to_list(tokens, S_HEREDOC,
+		if (add_token_to_list(t, S_HEREDOC,
 				extract_word_from_quote(input, i, input[*i])) == -1)
 			return (-1);
 		return (0);
 	}
 	if (input[*i] == '"')
 	{
-		if (add_token_to_list(tokens, S_HEREDOC,
+		if (add_token_to_list(t, S_HEREDOC,
 				extract_word_from_quote(input, i, input[*i])) == -1)
 			return (-1);
 		return (0);
 	}
 	while (input[*i] != '\0' && strchr("><| '\"", input[*i]) == NULL)
 		(*i)++;
-	if (add_token_to_list(tokens, HEREDOC,
-			ft_substr(input, start, *i - start)) == -1)
+	if (add_token_to_list(t, HEREDOC, ft_substr(input, s, *i - s)) == -1)
 		return (-1);
 	return (0);
 }

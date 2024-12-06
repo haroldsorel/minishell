@@ -10,6 +10,7 @@ SRCS =	main.c \
 		misc/signal.c \
 		misc/free.c \
 		misc/env.c\
+		misc/exit_minishell.c\
 		misc/expander.c \
 		misc/syntax_checker.c \
 		misc/syntax_checker_utils.c \

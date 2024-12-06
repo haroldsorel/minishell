@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	quotes_checker(char *input)
+static int	quotes_checker(char *input)
 {
 	int	i;
 	int	is_quote;
@@ -28,7 +28,7 @@ int	quotes_checker(char *input)
 	return (0);
 }
 
-int	pipe_checker(char *input)
+static int	pipe_checker(char *input)
 {
 	int	i;
 
@@ -52,7 +52,7 @@ int	pipe_checker(char *input)
 	return (0);
 }
 
-int	redir_checker(char *input)
+static int	redir_checker(char *input)
 {
 	int	i;
 

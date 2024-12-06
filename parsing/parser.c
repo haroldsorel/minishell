@@ -19,7 +19,7 @@ int	is_directory(const char *path)
 	return (S_ISDIR(path_stat.st_mode));
 }
 
-int	fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
+static int	fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
 {
 	t_token	*current;
 
@@ -41,7 +41,7 @@ int	fill_one_command(t_data *data, t_token **tokens, t_exec *exec)
 	return (0);
 }
 
-int	fill_commands(t_data *data, t_token **tokens)
+static int	fill_commands(t_data *data, t_token **tokens)
 {
 	int	i;
 
@@ -55,7 +55,7 @@ int	fill_commands(t_data *data, t_token **tokens)
 	return (0);
 }
 
-int	init_exec(t_data *data)
+static int	init_exec(t_data *data)
 {
 	int	i;
 

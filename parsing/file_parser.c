@@ -29,7 +29,7 @@ static void	file_error(char *filename)
 	}
 }
 
-int	file_handler(t_token *token, t_exec *exec)
+static int	file_handler(t_token *token, t_exec *exec)
 {
 	int	fd;
 

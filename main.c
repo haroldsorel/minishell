@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	minishell_launcher(t_data *data)
+static int	minishell_launcher(t_data *data)
 {
 	int	flag;
 

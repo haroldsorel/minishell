@@ -36,7 +36,7 @@ static int	print_export(char **env)
 	return (free(sorted_env), 0);
 }
 
-int	export_increment(t_data *data, char *str)
+static int	export_increment(t_data *data, char *str)
 {
 	char	*new;
 	char	*value;
@@ -61,7 +61,7 @@ int	export_increment(t_data *data, char *str)
 	return (0);
 }
 
-int	export_add_or_replace(t_data *data, char *str)
+static int	export_add_or_replace(t_data *data, char *str)
 {
 	char	*value;
 	char	*key;

@@ -37,7 +37,7 @@ void	check_for_empty_token(t_token *token, t_token **head)
 	free_one_token(temp);
 }
 
-int	concatenate_word(t_token *current)
+static int	concatenate_word(t_token *current)
 {
 	char	*old_value;
 
@@ -53,7 +53,7 @@ int	concatenate_word(t_token *current)
 	return (0);
 }
 
-void	delete_spaces(t_token **token)
+static void	delete_spaces(t_token **token)
 {
 	t_token	*current;
 	t_token	*temp;

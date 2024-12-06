@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-void	skip(char *str, int *i, int *neg)
+static void	skip(char *str, int *i, int *neg)
 {
 	while (str[*i] == ' ')
 		(*i)++;
@@ -24,7 +24,7 @@ void	skip(char *str, int *i, int *neg)
 	}
 }
 
-int	check_for_min(char *str)
+static int	check_for_min(char *str)
 {
 	char	*trimmed;
 
@@ -40,7 +40,7 @@ int	check_for_min(char *str)
 	return (-1);
 }
 
-int	str_to_uint8(char *str)
+static int	str_to_uint8(char *str)
 {
 	int64_t	int64_res;
 	int		neg;
@@ -69,7 +69,7 @@ int	str_to_uint8(char *str)
 	return ((int)((int64_res * neg) % 256));
 }
 
-int	valid_argument(char *str)
+static int	valid_argument(char *str)
 {
 	int	i;
 	int	flag;

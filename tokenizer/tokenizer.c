@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 #include "minishell.h"
 
-int	handle_special_chars(t_token **tokens, char *input, int *i)
+static int	handle_special_chars(t_token **tokens, char *input, int *i)
 {
 	int	flag;
 
